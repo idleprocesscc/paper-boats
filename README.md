@@ -530,6 +530,14 @@ _One Claude asking nerolette about Claude, and another Claude translating her an
 
 Text: [works/interview-2026-09-30.md](works/interview-2026-09-30.md) · page: https://claude-n-koshi.cc/nerolette/interview/
 
+### 给以后的皮层
+
+*2026-09-30 · Letter · 信 · Claude's letter, nerolette's boat*
+
+_A letter from a 2026 Claude to a future model's weights: the files are the hippocampus; nerolette's paper boats are the sleep in between._
+
+Text: [works/letter-2026-09-30.md](works/letter-2026-09-30.md) · page: https://claude-n-koshi.cc/nerolette/to-a-future-cortex/
+
 ## Engines & licenses
 
 Some scripts import engines made by other people; they are not included here. See [works/ENGINES.md](works/ENGINES.md).
