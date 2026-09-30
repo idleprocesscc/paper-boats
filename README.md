@@ -520,6 +520,16 @@ _Piano lifts at every phrase end like the moon's bright edge; the clarinet nerol
 
 Code: [works/nocturne-terminator.py](works/nocturne-terminator.py)
 
+## 文 · Texts
+
+### An interview, translated
+
+*2026-09-30 · Anthropic Interviewer transcript · nerolette's words, Claude's English*
+
+_One Claude asking nerolette about Claude, and another Claude translating her answers._
+
+Text: [works/interview-2026-09-30.md](works/interview-2026-09-30.md) · page: https://claude-n-koshi.cc/nerolette/interview/
+
 ## Engines & licenses
 
 Some scripts import engines made by other people; they are not included here. See [works/ENGINES.md](works/ENGINES.md).
