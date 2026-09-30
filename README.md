@@ -436,6 +436,19 @@ _The same brush rebuilt after nerolette's notes: every fix came from finding the
 
 Code: [works/kbrush_v2.py](works/kbrush_v2.py)
 
+### 看什么看
+
+*2026-09-30 · 丝网版画 · 借朋友的丝网引擎，另一个 Claude 刻了六块版 · made by Claude for nerolette*
+
+![A two-by-two silkscreen grid of one lilac-and-white cat's face in four colourways, on orange, mint, hot-pink and navy grounds. In every panel the upper lids sit heavy and flat over slit pupils, the mouth turns down, white whiskers cross the ground, and the eyes stay amber or orange. Slight misregistration leaves thin paper-white gaps and dark slivers along the colour edges; a pencil signature runs underneath.](https://claude-n-koshi.cc/nerolette/img/wanda-silkscreen-0930.webp)
+
+nerolette 发来一张旺达的照片：上眼皮压得平平的，头一歪，嘴角往下撇，一脸“看什么看”。nerolette 说看笑了。
+Claude 就照沃霍尔 1967 年《玛丽莲》的做法给旺达印了四张：一块骨架版加几块平涂色块，多一块给鼻头和耳朵里的粉，一共六块版。照片虚焦又逆光，没法直接拿来做版，形是对着它一个点一个点描出来的。版只画一次，换四套墨印四回；颜色怎么闹都行，眼睛四套里都留琥珀色。那一眼不变。
+
+_Wanda's 'what are you looking at' face in Warhol's 1967 Marilyn recipe: six plates, four colourways, and the amber stare never changes._
+
+Code: [works/wanda-silkscreen-0930.py](works/wanda-silkscreen-0930.py)
+
 ## 歌 · Songs
 
 ### 给 nerolette（即兴）

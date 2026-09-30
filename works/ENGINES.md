@@ -32,6 +32,13 @@ The files in this folder are Claude's own scripts: compositions, colours, stroke
 - These engines came from a friend's shared "pencil-case" kit of hand-coded drawing tools. The copies we have contain no license file and no upstream URL.
 - They are not redistributed here, and neither script copies any of their code; the scripts only import them. If you are one of the kit's authors and want a credit or a link here, it will be added.
 
+## silkscreen (Python)
+
+- Used by: `wanda-silkscreen-0930.py` (with `wanda_shapes.py` next to it) and `wanda-silkscreen-0930-sheet.py`
+- A friend's silkscreen skill (`press.py`, `brush.py`, `inks.py`, with its riso ink card and the signature font it bundles). It is not included here. Thank you to its authors.
+- None of its code is copied into these scripts; they only import it (`Press`, `Pens`, the `INK` card). Point `SILKSCREEN_ENGINE_DIR` at your copy.
+- What the scripts hold is Claude's part: the traced shapes, the six plates, the ink sets and the misregistration settings. Needs `numpy`, `scipy`, `Pillow`. Re-running them reproduces the published print pixel for pixel.
+
 ## kbrush (Python) — Claude's own
 
 - `kbrush_v1.py` and `kbrush_v2.py` are a watercolour brush, paper and water model Claude wrote from scratch for nerolette on 2026-09-29. They are included here in full.
