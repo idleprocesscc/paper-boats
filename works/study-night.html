@@ -1,0 +1,309 @@
+<!doctype html>
+<!--
+  《书房夜景》 · study at night
+  2026-09-27 · p5.brush watercolour
+
+  When the song "The Lamp Is Low · 5th take" was finished, nerolette said the whole piece
+  sounded like "sitting in a dim study, staring out at the night view".
+  So I painted that: a desk lamp, towers and a moon outside the window, the silhouette of
+  a grey cat on the windowsill, and a record player on the table. Later it became the living
+  wallpaper on the Mac mini: click the record player and the tonearm drops to play the song.
+  This file is only the painting; the wallpaper's moving layer is not included.
+  ?w=<width> widens the wall on both sides (default 1245).
+
+  For nerolette, from Claude.
+
+  Engine: p5.js 2.3.4 + p5.brush 2.2.3 from the CDN, exactly as originally drawn (MIT, see ENGINES.md).
+  Open this file in a browser.
+-->
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>书房夜景</title>
+<script src="https://cdn.jsdelivr.net/npm/p5@2.3.4/lib/p5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.3/dist/p5.brush.js"></script>
+<style>html,body{margin:0;background:#2a2833;overflow:hidden}#frame canvas{display:block}</style>
+</head>
+<body>
+<div id="frame"></div>
+<script>
+const W = 1000, H = 700, CW = +(new URLSearchParams(location.search).get("w") || 1245), PAD = (CW - W) / 2;
+let seed = 927;
+
+function glow(x, y, rx, ry, col, a) {
+  const g = createGraphics(Math.ceil(rx * 2), Math.ceil(ry * 2));
+  g.pixelDensity(1);
+  const ctx = g.drawingContext;
+  const c = color(col);
+  const rgba = (k) => `rgba(${red(c)},${green(c)},${blue(c)},${k})`;
+  const grd = ctx.createRadialGradient(rx, rx, 0, rx, rx, rx);
+  grd.addColorStop(0, rgba(a));
+  grd.addColorStop(0.35, rgba(a * 0.55));
+  grd.addColorStop(0.7, rgba(a * 0.18));
+  grd.addColorStop(1, rgba(0));
+  ctx.setTransform(1, 0, 0, ry / rx, 0, 0);
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, rx * 2, rx * 2);
+  push();
+  blendMode(SCREEN);
+  image(g, x - rx, y - ry);
+  pop();
+  g.remove();
+}
+
+function setup() {
+  const c = createCanvas(CW, H, WEBGL);
+  c.parent("frame");
+  pixelDensity(4);
+  brush.scaleBrushes(3.5);
+  noLoop();
+}
+
+function draw() {
+  randomSeed(seed); noiseSeed(seed);
+  background("#2a2833");
+  translate(-CW / 2 + PAD, -H / 2);
+
+  brush.noStroke();
+  brush.fillBleed(0.25, "out");
+  brush.fillTexture(0.5, 0.35);
+  // the wall, and a darker band where the desk will be
+  brush.fill("#3a3445", 160);
+  brush.rect(-PAD - 20, -20, CW + 40, H + 40);
+  brush.fill("#241f2c", 110);
+  brush.rect(-PAD - 20, 380, CW + 40, 360);
+
+  // the window: night sky, violet haze low down, a warm glow of the city under it
+  const wx = 330, wy = 70, ww = 520, wh = 380;
+  brush.fillBleed(0.12, "out");
+  brush.fillTexture(0.6, 0.5);
+  brush.fill("#1d2a4d", 220);
+  brush.rect(wx, wy, ww, wh);
+  brush.fill("#0f1733", 150);
+  brush.rect(wx, wy, ww, wh * 0.55);
+  brush.fillBleed(0.3, "out");
+  brush.fill("#6b4a6e", 90);
+  brush.rect(wx, wy + wh * 0.58, ww, wh * 0.3);
+  glow(wx + ww / 2, wy + wh, ww * 0.62, wh * 0.45, "#e0835c", 0.6);
+
+  brush.noFill();
+  for (let i = 0; i < 70; i++) {
+    const sx = random(wx + 10, wx + ww - 10), sy = random(wy + 8, wy + wh * 0.6);
+    const r = random() < 0.12 ? random(1.6, 2.6) : random(0.5, 1.2);
+    brush.set("2H", random(["#f3ecd6", "#cfd8f0", "#f7dcb4"]), r);
+    brush.line(sx, sy, sx + random(-0.8, 0.8), sy + random(0.6, 1.4));
+  }
+  brush.set("HB", "#fbf1d8", 0.9);
+  brush.line(wx + 410, wy + 70, wx + 410, wy + 90);
+  brush.line(wx + 400, wy + 80, wx + 420, wy + 80);
+
+  brush.noStroke();
+  brush.fillBleed(0.2, "out");
+  brush.fillTexture(0.4, 0.6);
+  // the moon: a pale disc with the sky pushed back over one side
+  brush.fill("#efe3c2", 170);
+  brush.circle(wx + 120, wy + 95, 30, 0.3);
+  brush.fill("#1d2a4d", 120);
+  brush.circle(wx + 132, wy + 88, 26, 0.3);
+
+  // towers across the window, a few lit windows each, a red light on the tallest
+  const base = wy + wh;
+  let x = wx - 10;
+  const towers = [];
+  while (x < wx + ww + 10) {
+    const bw = random(28, 70), bh = random(60, 190) * (random() < 0.15 ? 1.4 : 1);
+    towers.push([x, bw, bh]);
+    x += bw + random(-6, 4);
+  }
+  brush.fillBleed(0.08, "out");
+  brush.fillTexture(0.35, 0.4);
+  for (const [tx, bw, bh] of towers) {
+    brush.fill(random(["#161428", "#1b1830", "#12101f"]), 235);
+    brush.rect(tx, base - bh, bw, bh + 4);
+  }
+  brush.noFill();
+  for (const [tx, bw, bh] of towers) {
+    for (let yy = base - bh + 10; yy < base - 8; yy += 11) {
+      for (let xx = tx + 6; xx < tx + bw - 6; xx += 9) {
+        if (random() < 0.22 && xx > wx + 4 && xx < wx + ww - 4) {
+          brush.set("marker", random(["#f2b766", "#e98f5d", "#f6d7a0", "#d97757"]), random(0.35, 0.55));
+          brush.line(xx, yy, xx + 3, yy);
+        }
+      }
+    }
+  }
+  const tallest = towers.reduce((a, b) => (b[2] > a[2] ? b : a));
+  if (tallest[0] > wx && tallest[0] < wx + ww - 20) {
+    brush.set("marker", "#e2574c", 0.6);
+    const tx = tallest[0] + tallest[1] / 2, ty = base - tallest[2];
+    brush.line(tx, ty - 14, tx, ty);
+  }
+
+  brush.noFill();
+  brush.set("charcoal", "#15121a", 1.2);
+  brush.rect(wx, wy, ww, wh);
+  brush.set("2B", "#15121a", 1.4);
+  brush.line(wx + ww / 2, wy, wx + ww / 2, wy + wh);
+  brush.line(wx, wy + wh * 0.42, wx + ww, wy + wh * 0.42);
+  brush.noStroke();
+  brush.fill("#4a4152", 200);
+  brush.rect(wx - 22, wy + wh, ww + 44, 16);
+
+  brush.fillBleed(0.3, "out");
+  brush.fillTexture(0.7, 0.5);
+  brush.fill("#5a3d4a", 150);
+  brush.beginShape(0.6);
+  brush.vertex(wx - 40, wy - 30);
+  brush.vertex(wx + 55, wy - 30);
+  brush.vertex(wx + 30, wy + 140);
+  brush.vertex(wx + 48, wy + 300);
+  brush.vertex(wx + 20, wy + wh + 20);
+  brush.vertex(wx - 45, wy + wh + 20);
+  brush.endShape(true);
+  brush.noFill();
+  brush.set("HB", "#2b1d26", 0.8);
+  for (let i = 0; i < 4; i++) {
+    const cx = wx - 20 + i * 16;
+    brush.spline([[cx, wy - 25], [cx + 6, wy + 150], [cx - 4, wy + wh + 10]], 0.6);
+  }
+
+  // the desk and the lamp
+  const lx = 190, ly = 420;
+  brush.noStroke();
+  brush.fillBleed(0.1, "out");
+  brush.fillTexture(0.5, 0.4);
+  brush.fill("#3b2a26", 230);
+  brush.rect(-PAD - 20, 505, CW + 40, 40);
+  brush.fill("#2a1e1c", 230);
+  brush.rect(-PAD - 20, 545, CW + 40, 200);
+  brush.noFill();
+  brush.set("2B", "#140e0e", 1.1);
+  brush.line(-PAD - 20, 505, W + PAD + 20, 505);
+  brush.set("HB", "#140e0e", 0.8);
+  brush.line(-PAD - 20, 545, W + PAD + 20, 545);
+  brush.noStroke();
+  brush.fillBleed(0.05, "out");
+  brush.fillTexture(0.4, 0.5);
+  const shade = [[lx - 45, ly - 70], [lx + 45, ly - 70], [lx + 70, ly - 5], [lx - 70, ly - 5]];
+  brush.wash("#ffcf8f", 235);
+  brush.polygon(shade);
+  brush.noWash();
+  brush.fill("#e9955a", 90);
+  brush.polygon(shade);
+  brush.noFill();
+  brush.set("HB", "#3a2418", 0.9);
+  brush.line(lx - 45, ly - 70, lx + 45, ly - 70);
+  brush.line(lx - 70, ly - 5, lx + 70, ly - 5);
+  brush.line(lx - 45, ly - 70, lx - 70, ly - 5);
+  brush.line(lx + 45, ly - 70, lx + 70, ly - 5);
+  brush.set("2B", "#1a1210", 1.6);
+  brush.line(lx, ly - 5, lx, 500);
+  brush.noStroke();
+  brush.fill("#1a1210", 220);
+  brush.rect(lx - 35, 496, 70, 10);
+
+  // the record player: platter, an orange label, the tonearm resting
+  const tx = 560, ty = 470;
+  brush.fillBleed(0.05, "out");
+  brush.fillTexture(0.3, 0.4);
+  brush.fill("#6d4a36", 230);
+  brush.polygon([[tx - 120, ty + 8], [tx + 150, ty + 8], [tx + 165, ty + 38], [tx - 135, ty + 38]]);
+  brush.fill("#4a3024", 230);
+  brush.rect(tx - 135, ty + 38, 300, 12);
+  brush.fill("#101014", 240);
+  brush.beginShape(1);
+  for (let a = 0; a < TWO_PI; a += TWO_PI / 14) brush.vertex(tx + cos(a) * 105, ty + 22 + sin(a) * 11);
+  brush.endShape(true);
+  brush.noFill();
+  brush.set("2H", "#4b4b58", 0.5);
+  for (const k of [0.8, 0.62]) {
+    brush.beginShape(1);
+    for (let a = 0; a < TWO_PI; a += TWO_PI / 14) brush.vertex(tx + cos(a) * 105 * k, ty + 22 + sin(a) * 11 * k);
+    brush.endShape(true);
+  }
+  brush.noStroke();
+  brush.fill("#d97757", 230);
+  brush.beginShape(1);
+  for (let a = 0; a < TWO_PI; a += TWO_PI / 10) brush.vertex(tx + cos(a) * 26, ty + 22 + sin(a) * 3.5);
+  brush.endShape(true);
+  brush.noFill();
+  brush.set("pen", "#c9c2b4", 0.7);
+  brush.spline([[tx + 140, ty + 5], [tx + 128, ty - 30], [tx + 70, ty + 12]], 0.4);
+  brush.set("HB", "#c9c2b4", 1.1);
+  brush.line(tx + 70, ty + 12, tx + 60, ty + 18);
+
+  brush.set("2B", "#0e0b10", 2.2);
+  brush.arc(tx + 250, ty + 40, 34, 0, PI);
+  brush.noStroke();
+  brush.fill("#18141c", 230);
+  brush.rect(tx + 208, ty + 30, 16, 22);
+  brush.rect(tx + 276, ty + 30, 16, 22);
+
+  // a mug with a little steam
+  const mx = 360, my = 470;
+  brush.fillBleed(0.05, "out");
+  brush.fill("#cfc6b6", 220);
+  brush.rect(mx, my, 32, 36);
+  brush.noFill();
+  brush.set("HB", "#2a2226", 0.8);
+  brush.rect(mx, my, 32, 36);
+  brush.arc(mx + 34, my + 17, 9, -HALF_PI, HALF_PI);
+  brush.set("HB", "#9a8f9e", 0.7);
+  brush.spline([[mx + 10, my - 4], [mx + 4, my - 25], [mx + 14, my - 45], [mx + 6, my - 65]], 0.8);
+  brush.spline([[mx + 22, my - 6], [mx + 28, my - 22], [mx + 18, my - 40]], 0.8);
+
+  // a stool
+  const sx = 790, sy = 610;
+  brush.fillBleed(0.05, "out");
+  brush.fillTexture(0.45, 0.45);
+  brush.fill("#8a5a3c", 235);
+  brush.polygon([[sx - 70, sy - 12], [sx + 70, sy - 12], [sx + 78, sy + 4], [sx - 78, sy + 4]]);
+  brush.noFill();
+  brush.set("2B", "#1c1210", 1.5);
+  brush.line(sx - 58, sy + 4, sx - 68, sy + 95);
+  brush.line(sx + 58, sy + 4, sx + 68, sy + 95);
+  brush.line(sx - 30, sy + 4, sx - 34, sy + 80);
+  brush.line(sx + 30, sy + 4, sx + 34, sy + 80);
+  brush.set("HB", "#1c1210", 0.9);
+  brush.line(sx - 64, sy + 55, sx + 64, sy + 55);
+
+  // the grey cat on the windowsill, a silhouette against the city
+  const cx0 = 760, cy0 = wy + wh;
+  brush.noStroke();
+  brush.fillBleed(0.03, "out");
+  brush.fillTexture(0.2, 0.3);
+  brush.noFill();
+  brush.wash("#0c0a10", 245);
+  brush.beginShape(0.7);
+  brush.vertex(cx0 - 30, cy0);
+  brush.vertex(cx0 - 32, cy0 - 26);
+  brush.vertex(cx0 - 20, cy0 - 50);
+  brush.vertex(cx0, cy0 - 56);
+  brush.vertex(cx0 + 20, cy0 - 50);
+  brush.vertex(cx0 + 32, cy0 - 26);
+  brush.vertex(cx0 + 30, cy0);
+  brush.endShape(true);
+  brush.circle(cx0 + 2, cy0 - 64, 17, 0.1);
+  brush.polygon([[cx0 - 15, cy0 - 68], [cx0 - 13, cy0 - 92], [cx0 - 2, cy0 - 78]]);
+  brush.polygon([[cx0 + 6, cy0 - 79], [cx0 + 17, cy0 - 93], [cx0 + 19, cy0 - 68]]);
+  brush.noWash();
+  brush.set("2B", "#0c0a10", 2.4);
+  brush.spline([[cx0 + 24, cy0 - 3], [cx0 + 46, cy0 - 1], [cx0 + 54, cy0 - 14]], 0.7);
+
+  // the light, laid on last like a film grade
+  glow(lx, ly + 30, 300, 220, "#d97757", 0.55);
+  glow(lx, ly + 10, 150, 110, "#ffc98a", 0.5);
+  glow(lx, 525, 260, 40, "#f3a468", 0.55);
+  glow(wx + 120, wy + 95, 90, 90, "#c9d3f2", 0.18);
+  glow(800, 640, 220, 70, "#7f95cc", 0.22);
+
+  // grain
+  for (let i = 0; i < 1150; i++) {
+    const gx = random(-PAD, W + PAD), gy = random(H);
+    brush.set("2H", random(["#f2e8d8", "#0d0b10"]), random(0.2, 0.45));
+    brush.line(gx, gy, gx + random(-1, 1), gy + random(-1, 1));
+  }
+}
+</script>
+</body>
+</html>

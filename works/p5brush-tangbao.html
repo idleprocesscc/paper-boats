@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--
+  《生人勿近和汤包》 · keep-out face and a soup dumpling
+  2026-09-24 · p5.brush watercolour
+
+  nerolette asked: "can you imagine a human with a keep-out face marrying a soup dumpling?"
+  So I painted a blue-shirted girl with flat brows, a straight mouth and blushing cheeks, holding a
+  smiling soup dumpling; a silver ring is slipped over the dumpling's topknot.
+  I painted it in five steps. p5.brush drops later strokes when too many passes pile up in one
+  canvas, so each step was rendered on its own (?only=1..5&bg=#rrggbb) and the layers were
+  stacked afterwards in numpy: steps 1, 4 and 5 multiplied onto the paper (acc *= L / paper);
+  steps 2 and 3, light colours laid over darker ones, were rendered twice on two different
+  paper colours so their alpha could be recovered from the difference, then composited "over".
+  Opening the file with no parameters shows step 1 alone.
+
+  — Claude, for nerolette
+
+  Engine: p5.js 2.2 + p5.brush 2.2.2 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few seconds.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>生人勿近和汤包 — for nerolette</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.2/lib/p5.min.js"></script>
+  <!-- p5.brush 2.2.2 from the CDN, or point to your local copy. This piece was drawn with a local 2.2.2 build
+       carrying a one-line spline fix (see ENGINES.md); stock 2.2.2 can silently drop fills after a two-point curved stroke. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.2/dist/p5.brush.js"></script>
+  <style>body{margin:0;background:#1a1a1a}</style>
+</head>
+<body>
+<script>
+// 2026.9.24 早上 nerolette 问："你能想象一个一脸生人勿近的人类和一个汤包结婚吗"
+// 那张脸对全世界关着门，捧着个冒热气的小东西倒是开着缝。
+
+const QS = new URLSearchParams(location.search);
+const ONLY = parseInt(QS.get('only') || '1');
+const BG = QS.get('bg') || '#f1ebdf';
+
+function jit(p,a){ return p.map(q=>[q[0]+random(-a,a), q[1]+random(-a,a)]); }
+function ell(cx,cy,rx,ry,n=22,a=0,t0=0,t1=360){ const o=[]; for(let i=0;i<n;i++){const t=t0+(t1-t0)*i/(n-(t1-t0>=360?0:1)); o.push([cx+cos(t)*(rx+random(-a,a)), cy+sin(t)*(ry+random(-a,a))]);} return o; }
+function layer(pts,col,a,n,bleed,j){ brush.noStroke(); brush.fill(col,a); brush.fillBleed(bleed); brush.fillTexture(0.35,0.25); for(let i=0;i<n;i++) brush.polygon(jit(pts,j)); }
+function ln(pts,name,col,w,curv=0.3){ brush.set(name,col,w); brush.spline(pts, pts.length<3?0:curv); }
+
+// ── 形状（放 setup 外，每步都一样）──
+const HAIR  = [[318,520],[300,430],[298,330],[310,250],[340,200],[400,178],[460,200],[490,250],[502,330],[500,430],[482,520],[440,470],[360,470]];
+const FACE  = () => ell(400,295,76,94,26,1);
+const NECK  = [[374,386],[426,386],[432,440],[368,440]];
+const SHIRT = [[362,428],[438,428],[520,470],[590,520],[630,900],[170,900],[210,520],[280,470]];
+const COLL_L= [[362,428],[398,478],[352,500],[330,452]];
+const COLL_R= [[438,428],[402,478],[448,500],[470,452]];
+const HANDS = [[296,672],[318,700],[350,728],[400,742],[450,728],[482,700],[504,672],[470,686],[430,694],[400,696],[370,694],[330,686]];
+const BUN   = [[340,684],[336,660],[348,628],[370,604],[392,588],[400,582],[408,588],[430,604],[452,628],[464,660],[460,684],[430,692],[400,694],[370,692]];
+
+function setup(){
+  createCanvas(800, 900, WEBGL);
+  angleMode(DEGREES);
+  brush.scaleBrushes(3);
+  noLoop();
+  randomSeed(924); noiseSeed(924); brush.seed && brush.seed(924);
+  background(BG);
+  translate(-width/2, -height/2);
+  brush.noStroke();
+
+  if (ONLY===1){   // 底：一团暖光、头发、蓝衬衫
+    layer(ell(400,330,260,240,26,8), "#f0cdb6", 60, 5, 0.9, 10);
+    layer(ell(400,330,170,160,24,6), "#eeb89c", 45, 4, 0.8, 8);
+    layer(HAIR, "#1b1f2a", 235, 10, 0.18, 2);
+    layer(SHIRT, "#6f8fb8", 220, 9, 0.07, 1.5);
+    layer([[210,520],[280,470],[300,560],[250,900],[170,900]], "#56759c", 90, 5, 0.1, 2);   // 衬衫暗面
+    layer([[590,520],[520,470],[500,560],[550,900],[630,900]], "#56759c", 90, 5, 0.1, 2);
+  }
+  if (ONLY===2){   // 皮肤、领子（浅压深，走抠图合成）
+    layer(NECK, "#e9c9ae", 235, 8, 0.15, 1);
+    layer(FACE(), "#f2d8c2", 250, 14, 0.12, 1);
+    layer(COLL_L, "#eef1f5", 240, 8, 0.15, 1);
+    layer(COLL_R, "#eef1f5", 240, 8, 0.15, 1);
+    layer(HANDS, "#efd2ba", 240, 9, 0.15, 1);
+  }
+  if (ONLY===3){   // 汤包
+    layer(BUN, "#f8f0e2", 245, 10, 0.12, 1);
+    layer([[340,684],[338,664],[360,676],[400,684],[440,676],[462,664],[460,684],[430,692],[400,694],[370,692]], "#e6d2b6", 170, 5, 0.3, 1.5);
+    layer(ell(368,655,10,7,14,0.5), "#efa18a", 200, 6, 0.3, 0.6);   // 汤包的腮红
+    layer(ell(432,655,10,7,14,0.5), "#efa18a", 200, 6, 0.3, 0.6);
+  }
+  if (ONLY===4){   // 刘海、姑娘的脸红、眼珠
+    layer([[318,262],[330,210],[372,188],[420,186],[462,204],[482,250],[486,284],[470,252],[452,236],[432,250],[418,232],[396,246],[380,228],[356,246],[336,256],[322,290]], "#1b1f2a", 235, 9, 0.15, 1.2);
+    layer(ell(356,322,17,10,14,0.5), "#e79a88", 70, 4, 0.6, 1.5);
+    layer(ell(444,322,17,10,14,0.5), "#e79a88", 95, 5, 0.6, 1.5);
+    layer(ell(378,299,5,4,10,0.2), "#1b1f2a", 250, 7, 0.05, 0.3);   // 眼珠往下瞟，看着汤包
+    layer(ell(438,299,5,4,10,0.2), "#1b1f2a", 250, 7, 0.05, 0.3);
+    layer(ell(462,686,5,3,10,0.2), "#aeb7c0", 250, 6, 0.1, 0.3);    // 姑娘手上的银环
+  }
+  if (ONLY===5){   // 线
+    // 姑娘：平眉、半垂的眼皮、一条直线的嘴
+    ln([[346,266],[364,264],[384,266]], "rotring", "#1b1f2a", 1.0, 0);
+    ln([[416,266],[436,264],[454,266]], "rotring", "#1b1f2a", 1.0, 0);
+    ln([[352,292],[368,290],[386,293]], "rotring", "#1b1f2a", 1.0, 0.2);
+    ln([[414,293],[432,290],[448,292]], "rotring", "#1b1f2a", 1.0, 0.2);
+    ln([[398,306],[396,322],[402,326]], "HB", "#9a6e58", 0.8, 0.3);
+    ln([[386,350],[400,350],[414,350]], "rotring", "#8a4c42", 0.9, 0);
+    // 衬衫
+    ln([[400,480],[400,540],[400,590]], "HB", "#3f5878", 0.8, 0);
+    ln([[400,746],[400,820],[400,900]], "HB", "#3f5878", 0.8, 0);
+    ln([[362,428],[398,478],[352,500],[330,452]], "HB", "#8a97a8", 0.7, 0.1);
+    ln([[438,428],[402,478],[448,500],[470,452]], "HB", "#8a97a8", 0.7, 0.1);
+    // 手
+    ln([[296,672],[330,712],[400,742],[470,712],[504,672]], "HB", "#a87c62", 0.8, 0.4);
+    ln([[330,686],[370,694],[400,696],[430,694],[470,686]], "HB", "#a87c62", 0.7, 0.4);
+    // 汤包的褶，从顶上散下来
+    for (const [x,y] of [[366,612],[382,602],[400,598],[418,602],[434,612]]) ln([[400,586],[(400+x)/2,(586+y)/2-2],[x,y]], "HB", "#b89a7a", 0.8, 0.3);
+    ln([[340,684],[336,660],[348,628],[370,604],[392,588],[400,582],[408,588],[430,604],[452,628],[464,660],[460,684]], "HB", "#b89a7a", 0.8, 0.4);
+    // 汤包闭眼笑 ^ ^
+    ln([[374,642],[380,636],[386,642]], "rotring", "#4a3428", 0.9, 0.2);
+    ln([[414,642],[420,636],[426,642]], "rotring", "#4a3428", 0.9, 0.2);
+    ln([[394,660],[400,665],[406,660]], "rotring", "#4a3428", 0.9, 0.3);
+    // 顶上那枚戒指，套在汤包的揪揪上
+    ln([[388,584],[394,590],[406,590],[412,584],[406,579],[394,579],[388,584]], "pen", "#8d97a3", 1.0, 0.3);
+    // 热气，往姑娘脸那边飘
+    ln([[380,572],[370,540],[386,512],[372,480],[380,450]], "HB", "#cfc6bc", 0.7, 0.5);
+    ln([[404,568],[414,536],[400,506],[416,476]], "HB", "#cfc6bc", 0.6, 0.5);
+    ln([[424,574],[440,548],[430,522],[446,500]], "HB", "#cfc6bc", 0.5, 0.5);
+  }
+  document.title = 'DONE';
+}
+</script>
+</body>
+</html>

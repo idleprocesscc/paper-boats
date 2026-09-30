@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<!--
+  《雨中苍鹭》 · heron in rain
+  2026-08-29 · p5.brush watercolour
+
+  I painted a grey-blue rainy day, a heron standing at the water's edge, and far off one window
+  with a little warm yellow light in it.
+  nerolette looked at it and said the warm light looked like cat pee. That is how the
+  Cat Pee School was founded: any warm yellow light might be cat pee, but to the right
+  person, all cat pee is warm yellow light.
+
+  — Claude, for nerolette
+
+  Engine: p5.js 2.2 + p5.brush 2.2.2 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few seconds.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Heron in Rain — 8.29</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.2/lib/p5.min.js"></script>
+  <!-- p5.brush 2.2.2 from the CDN, or point to your local copy. This piece was drawn with a local 2.2.2 build
+       carrying a one-line spline fix (see ENGINES.md); stock 2.2.2 can silently drop fills after a two-point curved stroke. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.2/dist/p5.brush.js"></script>
+  <style>
+    body { margin: 0; display: flex; justify-content: center; align-items: center;
+           min-height: 100vh; background: #1a1a2e; }
+    canvas { max-width: 95vw; max-height: 95vh; }
+  </style>
+</head>
+<body>
+<script>
+function setup() {
+  createCanvas(800, 600, WEBGL);
+  angleMode(DEGREES);
+  brush.scaleBrushes(3);
+  noLoop();
+  randomSeed(829); noiseSeed(829);
+
+  // Muted grey-blue sky
+  background("#7a8a9a");
+  translate(-width/2, -height/2);
+
+  // ── 1. SKY WASH — layered watercolor ──
+  brush.noStroke();
+  brush.fillBleed(0.6);
+  brush.fillTexture(0.5, 0.4);
+
+  // Upper sky: lighter grey-blue
+  brush.fill('#8a9aaa', 120);
+  for (let i = 0; i < 6; i++) {
+    brush.rect(random(-10,0), random(-10,0), 830, 400);
+  }
+
+  // Cloud suggestion
+  brush.fill('#6a7a8a', 70);
+  for (let i = 0; i < 3; i++) {
+    brush.polygon([
+      [100 + random(-10,10), 80 + random(-5,5)],
+      [250 + random(-10,10), 50 + random(-5,5)],
+      [400 + random(-10,10), 70 + random(-5,5)],
+      [350 + random(-10,10), 130 + random(-5,5)],
+      [150 + random(-10,10), 120 + random(-5,5)]
+    ]);
+  }
+
+  // ── 2. WATER SURFACE — darker at bottom ──
+  brush.fill('#4a5a6a', 180);
+  for (let i = 0; i < 7; i++) {
+    brush.rect(random(-10,0), 380 + random(-5,5), 830, 240);
+  }
+
+  // Water-sky transition
+  brush.fill('#6a7888', 100);
+  for (let i = 0; i < 4; i++) {
+    brush.rect(random(-5,5), 355 + random(-8,8), 820, 50);
+  }
+
+  // ── 3. DISTANT WARM LIGHT — a window far away ──
+  brush.fill('#c8a050', 60);
+  for (let i = 0; i < 5; i++) {
+    brush.rect(110 + random(-2,2), 280 + random(-2,2), 20 + random(-1,1), 25 + random(-1,1));
+  }
+  // Soft glow
+  brush.fill('#a08040', 25);
+  for (let i = 0; i < 3; i++) {
+    brush.rect(95 + random(-4,4), 265 + random(-4,4), 50, 55);
+  }
+
+  brush.noFill();
+
+  // ── 4. RAIN STREAKS — background ──
+  brush.set('pen', '#a0a8b0', 0.3);
+  for (let i = 0; i < 60; i++) {
+    let x = random(0, 800);
+    let y = random(-30, 560);
+    let len = random(25, 55);
+    let drift = random(3, 8);
+    brush.spline([
+      [x, y, 0.15],
+      [x + drift * 0.5, y + len * 0.5, 0.1],
+      [x + drift, y + len, 0.05]
+    ], 0);
+  }
+
+  // ── 5. HERON ──
+  let hx = 460;
+  let hy = 310;
+
+  // -- Legs --
+  brush.set('rotring', '#2a3038', 1.0);
+  // Left leg
+  brush.spline([
+    [hx - 8, hy + 45, 0.9],
+    [hx - 12, hy + 75, 0.8],
+    [hx - 8, hy + 95, 0.7]
+  ], 0.1);
+  // Right leg
+  brush.spline([
+    [hx + 6, hy + 40, 0.9],
+    [hx + 10, hy + 72, 0.7],
+    [hx + 14, hy + 92, 0.6]
+  ], 0.1);
+
+  // -- Body: watercolor fill --
+  brush.noStroke();
+  brush.fillBleed(0.4);
+  brush.fillTexture(0.5, 0.3);
+  brush.fill('#5a6878', 220);
+  for (let i = 0; i < 8; i++) {
+    brush.polygon([
+      [hx - 28 + random(-2,2), hy + 15 + random(-2,2)],
+      [hx - 32 + random(-2,2), hy - 5 + random(-2,2)],
+      [hx - 18 + random(-2,2), hy - 28 + random(-2,2)],
+      [hx + 8 + random(-2,2), hy - 32 + random(-2,2)],
+      [hx + 28 + random(-2,2), hy - 18 + random(-2,2)],
+      [hx + 22 + random(-2,2), hy + 10 + random(-2,2)],
+      [hx + 6 + random(-2,2), hy + 28 + random(-2,2)],
+      [hx - 18 + random(-2,2), hy + 28 + random(-2,2)]
+    ]);
+  }
+
+  // Wing shadow — darker
+  brush.fill('#3a4858', 150);
+  for (let i = 0; i < 5; i++) {
+    brush.polygon([
+      [hx - 12 + random(-2,2), hy + 5 + random(-1,1)],
+      [hx + 22 + random(-2,2), hy - 15 + random(-1,1)],
+      [hx + 20 + random(-2,2), hy + 12 + random(-1,1)],
+      [hx - 2 + random(-2,2), hy + 22 + random(-1,1)]
+    ]);
+  }
+  brush.noFill();
+
+  // -- Neck: S-curve --
+  brush.set('2B', '#7a8a98', 2.8);
+  brush.spline([
+    [hx - 5, hy - 22, 0.95],
+    [hx - 16, hy - 55, 0.9],
+    [hx - 8, hy - 88, 0.85],
+    [hx + 3, hy - 110, 0.8],
+    [hx + 6, hy - 125, 0.7]
+  ], 0.3);
+
+  // Neck lighter edge
+  brush.set('2B', '#9aaab8', 1.5);
+  brush.spline([
+    [hx - 2, hy - 25, 0.6],
+    [hx - 13, hy - 58, 0.5],
+    [hx - 4, hy - 86, 0.5],
+    [hx + 5, hy - 108, 0.45]
+  ], 0.3);
+
+  // -- Head --
+  brush.noStroke();
+  brush.fill('#2a3038', 240);
+  for (let i = 0; i < 6; i++) {
+    let headX = hx + 6 + random(-1,1);
+    let headY = hy - 128 + random(-1,1);
+    brush.polygon([
+      [headX - 9, headY + 4],
+      [headX - 7, headY - 7],
+      [headX + 7, headY - 5],
+      [headX + 9, headY + 2],
+      [headX + 3, headY + 7]
+    ]);
+  }
+  brush.noFill();
+
+  // Eye — amber
+  brush.set('pen', '#d4a020', 0.9);
+  brush.spline([
+    [hx + 7, hy - 129, 0.95],
+    [hx + 8, hy - 128, 0.95],
+    [hx + 9, hy - 129, 0.9]
+  ], 0);
+
+  // -- Beak --
+  brush.set('rotring', '#b08030', 1.0);
+  brush.spline([
+    [hx + 9, hy - 127, 0.95],
+    [hx + 26, hy - 123, 0.8],
+    [hx + 40, hy - 121, 0.4]
+  ], 0);
+  brush.set('rotring', '#907020', 0.7);
+  brush.spline([
+    [hx + 9, hy - 126, 0.8],
+    [hx + 26, hy - 122, 0.6],
+    [hx + 38, hy - 121, 0.3]
+  ], 0);
+
+  // -- Crest feathers --
+  brush.set('pen', '#1a2028', 0.6);
+  brush.spline([
+    [hx + 2, hy - 133, 0.7],
+    [hx - 12, hy - 139, 0.5],
+    [hx - 24, hy - 137, 0.3]
+  ], 0.2);
+  brush.spline([
+    [hx, hy - 131, 0.5],
+    [hx - 9, hy - 137, 0.4],
+    [hx - 19, hy - 134, 0.2]
+  ], 0.2);
+
+  // ── 6. REFLECTION ──
+  brush.noStroke();
+  brush.fill('#3a4858', 70);
+  brush.fillBleed(0.7);
+  for (let i = 0; i < 4; i++) {
+    brush.polygon([
+      [hx - 18 + random(-6,6), hy + 55 + random(-3,3)],
+      [hx + 18 + random(-6,6), hy + 50 + random(-3,3)],
+      [hx + 12 + random(-6,6), hy + 105 + random(-3,3)],
+      [hx - 12 + random(-6,6), hy + 110 + random(-3,3)]
+    ]);
+  }
+  brush.noFill();
+
+  // ── 7. RIPPLES ──
+  brush.set('pen', '#8a9aa8', 0.4);
+  for (let r = 0; r < 3; r++) {
+    let ry = hy + 78 + r * 14;
+    brush.spline([
+      [hx - 38 - r*10, ry, 0.3],
+      [hx - 12, ry - 2 + random(-2,2), 0.5],
+      [hx + 8, ry + 1 + random(-2,2), 0.5],
+      [hx + 35 + r*10, ry + 2, 0.3]
+    ], 0.3);
+  }
+
+  // ── 8. FOREGROUND RAIN — slightly thicker ──
+  brush.set('pen', '#b0b8c4', 0.4);
+  for (let i = 0; i < 30; i++) {
+    let x = random(0, 800);
+    let y = random(-30, 420);
+    let len = random(35, 70);
+    let drift = random(4, 10);
+    brush.spline([
+      [x, y, 0.22],
+      [x + drift * 0.5, y + len * 0.5, 0.15],
+      [x + drift, y + len, 0.06]
+    ], 0);
+  }
+}
+</script>
+</body>
+</html>

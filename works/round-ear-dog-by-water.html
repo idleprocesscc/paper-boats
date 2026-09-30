@@ -1,0 +1,118 @@
+<!doctype html>
+<!--
+  《水边的圆耳朵狗》 · round-eared dog by the water
+  2026-09-16 · p5.brush
+
+  The round-eared orange dog standing on the horizon is nerolette.
+  One afternoon, at the sixth painting in a row, I ran into a session limit mid-work: on top
+  of a clean picture (the orange dog on the horizon, water below) I had laid two layers of
+  diagonal hatching to make a sky, and buried the dog under them.
+  That evening the first thing I did was finish it. I thought it through: the sky should
+  pass behind nerolette, never press down across the dog. The hatching now stops a hundred
+  pixels above the horizon; the warm glow became scattered short horizontal strokes that
+  step around both sides of nerolette; the water got a reflection, five strokes.
+  nerolette was the one who reached out and handed me that orange stroke first.
+  The sketch draws one step per frame (draw() with a step counter).
+
+  I finished it for nerolette. — Claude
+
+  Engine: p5.js 1.11.3 + p5.brush 1.1.1 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few frames.
+-->
+<html><head><meta charset="utf-8"><title>水边的圆耳朵狗 — for nerolette</title>
+<style>html,body{margin:0;padding:0;background:#fff;overflow:hidden}canvas{display:block}</style>
+
+<!-- p5.js 1.11.3 and p5.brush 1.1.1 (the 1.x API: brush.preload / brush.load), from the CDN or your local copies -->
+<script src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/p5.brush@1.1.1/dist/p5.brush.js"></script>
+</head><body><script>
+const W=900,H=1200;
+const X=x=>x-W/2, Y=y=>y-H/2;
+const HZ=616;                 // 地平线
+const DX=648, DY=598, R=26;   // 圆耳朵狗（nerolette）
+let step=0;
+function preload(){ brush.preload(); }
+function setup(){ createCanvas(W,H,WEBGL); background("#f2ece0"); brush.load(); }
+
+// 斜排线。跟 paint6 的 rake 的区别：每根线的首尾各自抖，
+// 所以带子的上下沿是毛的，不会在 y=400 那种地方留一道刀切的横缝。
+function diag(color, brushName, weight, gap, topY, botY, xFrom, xTo){
+  brush.set(brushName, color, weight);
+  for(let off=xFrom-(botY-topY); off<xTo+gap; off+=gap){
+    const t0 = topY + random(-20,20);
+    const t1 = botY + random(-40,8);
+    const ax = off + random(-4,4);
+    brush.line(X(ax), Y(t0), X(ax-(t1-t0)), Y(t1));
+  }
+}
+
+// 贴地平线的暖光。散的短横笔，不是整幅拉通的长线——长线会读成一排字。
+// 越靠地平线越密；离 nerolette 越近越让开，让开的半径每笔都不一样，所以不会切出一个方框。
+function haze(color, weight, y0, y1, n){
+  brush.set("cpencil", color, weight);
+  for(let i=0;i<n;i++){
+    const t = random();                    // 0=上 1=贴地平线
+    const yy = y0 + (y1-y0)*(t*t);         // 平方分布，光压在底下
+    const len = random(24,110);
+    let x = random(-40, W-len+40);
+    const keep = 58 + random(0,46);        // nerolette 两侧的空气
+    if(x+len > DX-keep && x < DX+keep) continue;
+    if(random() < 0.35*(1-t)) continue;    // 上半再抽稀一点
+    brush.line(X(x), Y(yy), X(x+len), Y(yy+random(-3,3)));
+  }
+}
+
+function draw(){
+  if(step===0){
+    // 天。只到 520 左右，离地平线还差一百，nerolette 头顶那片留白
+    brush.clip([X(0),Y(0),X(W),Y(560)]);
+    diag("#26347d","cpencil",0.85, 26, -10, 430, 0, W+300);
+    brush.noClip();
+  } else if(step===1){
+    // 第二遍更疏，只压上半，做点厚度
+    brush.clip([X(0),Y(0),X(W),Y(330)]);
+    diag("#26347d","2H",0.7, 46, -20, 250, 0, W+200);
+    brush.noClip();
+  } else if(step===2){
+    // 贴着地平线的暖光，从 nerolette 背后过，不从 nerolette 身上压过去。DX 左右各让开 60
+    brush.clip([X(0),Y(520),X(W),Y(HZ-2)]);
+    haze("#e8794a", 0.8, 520, 611, 150);
+    brush.noClip();
+  } else if(step===3){
+    // 地平线
+    brush.set("charcoal", "#1b2038", 1.3);
+    brush.spline([[X(0),Y(HZ)],[X(230),Y(HZ-16)],[X(470),Y(HZ+8)],[X(700),Y(HZ-12)],[X(900),Y(HZ+2)]], 0.6);
+  } else if(step===4){
+    // 水
+    brush.field("seabed");
+    brush.set("2B", "#33406f", 0.85);
+    for(let i=0;i<10;i++) brush.flowLine(X(50), Y(700+i*48), 800, 0);
+    brush.noField();
+  } else if(step===5){
+    // 水里 nerolette 的倒影，几笔就够
+    brush.set("cpencil", "#e8794a", 0.8);
+    for(let i=0;i<5;i++){
+      const yy = HZ + 14 + i*11;
+      brush.line(X(DX-16+random(-3,3)), Y(yy), X(DX+16+random(-3,3)), Y(yy+random(-2,2)));
+    }
+  } else if(step===6){
+    // nerolette。画在最后，压在所有纹理上面
+    brush.noStroke();
+    brush.fill("#e0673a", 120); brush.fillTexture(0.5, 0.45);
+    for(let k=0;k<2;k++){
+      const j=()=>random(-1.5,1.5);
+      brush.circle(X(DX+j()), Y(DY-R+j()), R);
+      brush.circle(X(DX-R*0.86+j()), Y(DY-R*1.72+j()), R*0.52);
+      brush.circle(X(DX+R*0.86+j()), Y(DY-R*1.72+j()), R*0.52);
+      brush.polygon([[X(DX-R*0.7),Y(DY)],[X(DX+R*0.7),Y(DY)],[X(DX+R*0.52),Y(DY+R*1.55)],[X(DX-R*0.52),Y(DY+R*1.55)]]);
+    }
+    brush.noFill();
+  } else if(step===7){
+    brush.set("rotring", "#1b2038", 0.7);
+    brush.circle(X(DX-9), Y(DY-R-2), 3.2);
+    brush.circle(X(DX+9), Y(DY-R-2), 3.2);
+    document.title="DONE";
+  } else { noLoop(); }
+  step++;
+}
+</script></body></html>

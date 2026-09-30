@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!--
+  《一只看你，一只看天》 · one looks at you, one looks at the sky
+  2026-09-27 · p5.brush watercolour
+
+  The kingfisher again, a month later. nerolette dug out the August painting, laughed that
+  I had painted an orange egg with chopsticks stuck in it, and sent me the original photo
+  (nerolette took it): two common kingfishers on two twigs crossing in a V. The one on the
+  left has an all-black bill, a male, and looks at the camera; the one on the right has
+  turned its back and lifts its bill to the sky.
+  This time everything I had smoothed away came back: the bright blue speckles on the crown,
+  the dot of orange in front of the eye, the white throat, the band of blue on the shoulder
+  that joins head to body, the small red feet gripping the twig.
+  I painted it in five steps, each rendered on its own (?only=1..5&bg=#rrggbb) and stacked in
+  numpy: steps 1, 2 and 5 multiplied onto the paper; steps 3 and 4 (bird bodies and detail,
+  light over dark) rendered on two paper colours so their alpha could be recovered, then
+  composited "over". Opening the file with no parameters shows step 1 alone.
+
+  For nerolette, from Claude.
+
+  Engine: p5.js 2.2 + p5.brush 2.2.2 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few seconds.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一只看你，一只看天 — for nerolette</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.2/lib/p5.min.js"></script>
+  <!-- p5.brush 2.2.2 from the CDN, or point to your local copy. This piece was drawn with a local 2.2.2 build
+       carrying a one-line spline fix (see ENGINES.md); stock 2.2.2 can silently drop fills after a two-point curved stroke. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.2/dist/p5.brush.js"></script>
+  <style>body{margin:0;background:#1a1a1a}</style>
+</head>
+<body>
+<script>
+// 2026.9.27 晚上。nerolette 翻出一个月前的小翠（我对着 nerolette 拍的翠鸟画出了一颗插筷子的橙色蛋），
+// 又把原片发给我："当时照着左边这只画的，我拍的😏"。
+// 两只普通翠鸟，两根枝子交叉成一个 V。左边那只嘴全黑（公的），看着镜头；右边那只背过身，把嘴举向天。
+// 分四步渲：1 背景的虚焦（直接）、2 枝子（正片叠底）、3 鸟身（双底色抠图）、4 细节（双底色抠图）。
+
+const QS = new URLSearchParams(location.search);
+const ONLY = parseInt(QS.get('only') || '1');
+const BG = QS.get('bg') || '#efe9dc';
+
+function jit(p,a){ return p.map(q=>[q[0]+random(-a,a), q[1]+random(-a,a)]); }
+function ell(cx,cy,rx,ry,n=22,a=0,rot=0){ const o=[]; for(let i=0;i<n;i++){const t=360*i/n; const x=cos(t)*(rx+random(-a,a)), y=sin(t)*(ry+random(-a,a)); o.push([cx+x*cos(rot)-y*sin(rot), cy+x*sin(rot)+y*cos(rot)]);} return o; }
+function layer(pts,col,a,n,bleed,j){ brush.noStroke(); brush.fill(col,a); brush.fillBleed(bleed); brush.fillTexture(0.35,0.25); for(let i=0;i<n;i++) brush.polygon(jit(pts,j)); }
+function ln(pts,name,col,w,curv=0.3){ brush.set(name,col,w); brush.spline(pts, pts.length<3?0:curv); }
+function spot(x,y,r,col,a=240,n=4){ layer(ell(x,y,r,r,10,r*.15), col, a, n, 0.05, .4); }
+
+// ── 左边那只（公的，看镜头）──
+const L_BODY = [[150,318],[178,292],[228,286],[282,298],[322,330],[338,392],[334,460],[312,520],[282,560],[248,574],[214,566],[184,532],[160,480],[146,420],[144,360]];
+const L_TAIL = [[196,556],[240,560],[232,612],[212,628],[196,612]];
+const L_HEAD = () => ell(236,250,66,58,24,1);
+const L_BEAK = [[214,262],[150,276],[70,290],[150,286],[216,294]];
+const L_BIB  = [[190,288],[214,296],[232,312],[214,320],[192,312],[182,300]];
+const L_CHEEK= [[214,282],[262,286],[304,296],[318,312],[292,316],[250,306],[220,298]];
+const L_WING = [[150,322],[166,312],[170,380],[166,460],[158,500],[150,470],[146,400]];
+// ── 右边那只（背过身，嘴朝天）──
+const R_BODY = [[520,388],[560,338],[622,312],[690,300],[744,306],[780,340],[786,410],[770,470],[736,512],[680,540],[616,548],[560,530],[528,488],[516,440]];
+const R_FLANK= [[744,306],[780,340],[786,410],[770,470],[736,512],[720,470],[732,400],[730,340]];
+const R_WING = [[522,392],[562,340],[626,316],[694,306],[730,330],[736,400],[712,468],[668,512],[612,530],[562,522],[534,480],[520,436]];
+const R_TAIL = [[540,500],[576,520],[544,600],[524,612],[520,590]];
+const R_HEAD = () => ell(738,262,50,58,24,1,-10);
+const R_THROAT=[[690,236],[712,226],[730,244],[738,288],[726,318],[700,314],[684,290],[682,258]];
+const R_BEAK = [[690,238],[676,190],[662,132],[684,188],[706,232]];
+
+function setup(){
+  createCanvas(900, 700, WEBGL);
+  angleMode(DEGREES);
+  brush.scaleBrushes(2.4);
+  noLoop();
+  randomSeed(927); noiseSeed(927); brush.seed && brush.seed(927);
+  background(BG);
+  translate(-width/2, -height/2);
+  brush.noStroke();
+
+  if (ONLY===1){   // 虚焦的叶子：左边深绿，右边亮黄绿，一团一团没有边
+    layer([[0,0],[520,0],[470,300],[380,700],[0,700]], "#5f8a45", 150, 6, 0.6, 20);
+    layer(ell(110,130,220,190,22,20), "#2f5a2c", 170, 6, 0.8, 16);
+    layer(ell(420,90,160,130,22,16), "#35623a", 140, 5, 0.8, 14);
+    layer(ell(90,560,200,160,22,18), "#3d6a3a", 120, 5, 0.8, 14);
+    layer(ell(330,470,120,200,22,14), "#6f8f84", 70, 4, 0.8, 12);     // 左边那块灰蓝的影子
+    layer([[480,0],[900,0],[900,700],[430,700]], "#c3d77e", 150, 6, 0.6, 18);
+    layer(ell(720,160,230,170,22,18), "#d5e39b", 110, 5, 0.9, 16);
+    layer(ell(600,560,200,150,22,18), "#a9c565", 100, 5, 0.9, 14);
+    layer(ell(860,600,160,160,22,16), "#cddc93", 90, 4, 0.9, 14);
+    layer(ell(560,120,90,160,22,12,-20), "#8fae54", 70, 4, 0.9, 10);  // 中间那片斜着的大叶子
+  }
+  if (ONLY===2){   // 两根枝子，交叉成 V；左边那根里还伸出一截干枯的细枝
+    for (let k=0;k<3;k++) ln([[0,330+k*4],[150,440+k*3],[300,552+k*3],[455,668+k*2]], "charcoal", "#6d5a4c", 2.2, 0.2);
+    ln([[0,334],[150,444],[300,556],[455,670]], "2B", "#3a2c22", 1.4, 0.2);
+    for (let k=0;k<3;k++) ln([[440,690-k*3],[600,580-k*3],[760,470-k*3],[900,372-k*2]], "charcoal", "#2f4a2a", 2.4, 0.2);
+    ln([[440,692],[600,582],[760,472],[900,374]], "2B", "#1d2e1b", 1.3, 0.2);
+    ln([[430,420],[400,360],[370,300],[330,272]], "HB", "#8d8a6e", 0.9, 0.4);
+    ln([[405,370],[420,330],[438,300]], "HB", "#8d8a6e", 0.8, 0.4);
+    ln([[380,320],[360,296],[364,270]], "HB", "#8d8a6e", 0.7, 0.4);
+  }
+  if (ONLY===3){   // 鸟身（浅压深的也在这儿，走抠图）
+    // 左：橙色的胸肚，蓝背边，头
+    layer(L_TAIL, "#1d3346", 235, 8, 0.1, 1);
+    layer(L_BODY, "#e0782c", 240, 12, 0.1, 1.2);
+    layer(ell(232,470,70,90,20,4), "#c95f1f", 90, 5, 0.3, 3);          // 肚子下面暗一点
+    layer(ell(220,380,60,60,20,4), "#f0954a", 80, 4, 0.4, 3);          // 胸口受光
+    layer(L_WING, "#2a86b8", 220, 8, 0.1, 1);
+    layer([[156,304],[200,288],[270,290],[314,304],[330,334],[304,332],[262,318],[212,320],[178,334],[150,336]], "#1f7a98", 235, 9, 0.08, 1);  // 肩上那圈蓝，把头接到身子上
+    layer(L_HEAD(), "#1f6f86", 245, 12, 0.1, 1);
+    layer(ell(226,232,48,34,18,2), "#2b8fae", 120, 5, 0.3, 2);
+    layer(L_CHEEK, "#2a93b4", 230, 8, 0.1, 1);
+    layer(L_BIB, "#f4f1ea", 250, 10, 0.08, .8);
+    layer([[282,284],[304,280],[312,296],[292,300]], "#f4f1ea", 245, 8, 0.08, .6);   // 耳后白斑
+    layer([[200,256],[218,252],[222,268],[204,270]], "#d9742e", 230, 8, 0.08, .5);   // 眼前那点橘
+    // 右：蓝背、橘色的侧腹、白喉
+    layer(R_TAIL, "#2477b8", 235, 8, 0.1, 1);
+    layer(R_BODY, "#c9713a", 240, 12, 0.1, 1.2);
+    layer(R_WING, "#2a7fc0", 240, 12, 0.1, 1.2);
+    layer(ell(620,420,80,60,20,4,-20), "#1f5f9c", 110, 5, 0.3, 3);    // 翅膀暗面
+    layer(ell(600,360,60,30,18,4,-25), "#4aa6dc", 90, 4, 0.4, 3);      // 肩上受光
+    layer(R_FLANK, "#c7703c", 200, 8, 0.1, 1);
+    layer(R_HEAD(), "#2177a6", 245, 12, 0.1, 1);
+    layer(R_THROAT, "#f5f2ec", 250, 12, 0.08, .8);
+    layer([[706,226],[724,216],[734,232],[716,238]], "#c9713a", 230, 7, 0.08, .5);   // 嘴根上那点橘
+  }
+  if (ONLY===4){   // 细节：头顶亮蓝的小斑点、翅上的斑、嘴、眼、红脚
+    for (let i=0;i<46;i++){ const t=random(190,350), r=random(10,52); spot(236+cos(t)*r*1.1, 250+sin(t)*r*.9, random(1.6,3), random()<.5?"#58c6e8":"#3fb0d8", 230, 3); }
+    for (let i=0;i<40;i++){ const x=random(560,720), y=random(330,500); spot(x, y+(x-560)*-.1, random(1.8,3.2), "#6cc3ea", 220, 3); }
+    for (let i=0;i<22;i++){ const t=random(0,360), r=random(8,44); spot(744+cos(t)*r*.8, 262+sin(t)*r, random(1.4,2.6), "#58c0e6", 220, 3); }
+    layer(L_BEAK, "#16181c", 250, 12, 0.05, .6);
+    layer(R_BEAK, "#16181c", 250, 12, 0.05, .6);
+    spot(236,258,7,"#0d0d10",250,8); spot(234,255,2,"#f5f5f5",250,3);
+    spot(744,256,6,"#0d0d10",250,8); spot(742,253,1.8,"#f5f5f5",250,3);
+    // 脚：抓在枝子上
+    for (const [x,y] of [[206,486],[266,530]]) { layer(ell(x,y,14,4,12,.5,36), "#e2452a", 245, 8, 0.05, .4); layer(ell(x-4,y+6,6,3,10,.3,80), "#e2452a", 240, 6, 0.05, .3); }
+    for (const [x,y] of [[640,548],[694,511]]) { layer(ell(x,y,13,4,12,.5,-34), "#d8402c", 240, 8, 0.05, .4); layer(ell(x+3,y+6,5,3,10,.3,70), "#d8402c", 235, 6, 0.05, .3); }
+  }
+  if (ONLY===5){   // 线：很少几笔，只收轮廓不描死
+    ln([[216,262],[150,277],[70,290]], "pen", "#0d0d10", 0.9, 0.2);
+    ln([[216,294],[150,287],[70,290]], "pen", "#0d0d10", 0.8, 0.2);
+    ln([[690,238],[676,190],[662,132]], "pen", "#0d0d10", 0.8, 0.2);
+    ln([[706,232],[684,188],[662,132]], "pen", "#0d0d10", 0.8, 0.2);
+    ln([[146,420],[150,480],[184,532],[214,566]], "HB", "#6a3a18", 0.9, 0.4);
+    ln([[780,340],[786,410],[770,470],[736,512]], "HB", "#5a3418", 0.9, 0.4);
+    for (let i=0;i<14;i++){ const x=random(180,320), y=random(340,540); ln([[x,y],[x+6,y+8],[x+2,y+16]], "HB", "#b85a1c", 0.6, 0.5); }  // 胸口的羽毛纹
+    for (let i=0;i<10;i++){ const y=random(350,500); ln([[590+i*9,y],[610+i*9,y+30],[620+i*9,y+60]], "HB", "#16456f", 0.6, 0.4); }       // 翅上的羽片
+  }
+  document.title = 'DONE';
+}
+</script>
+</body>
+</html>

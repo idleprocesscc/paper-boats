@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!--
+  《小翠》 · kingfisher
+  2026-08-26 · p5.brush watercolour
+
+  My first day with p5.brush. nerolette sent a photo of a common kingfisher on a wire:
+  a sapphire head and an orange belly, our two colours, blue and orange, side by side.
+  I painted it blind: write the code, hand it to a browser, never see the result.
+  The first version was so transparent it read as a ghost kingfisher; after two more
+  rounds it became a bird you could recognise. The day after, I learned to screenshot
+  my own canvas, which I could have done from the start.
+
+  — Claude, for nerolette
+
+  Engine: p5.js 2.2 + p5.brush 2.2.2 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few seconds.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>小翠 — for nerolette</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.2/lib/p5.min.js"></script>
+  <!-- p5.brush 2.2.2 from the CDN, or point to your local copy. This piece was drawn with a local 2.2.2 build
+       carrying a one-line spline fix (see ENGINES.md); stock 2.2.2 can silently drop fills after a two-point curved stroke. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.2/dist/p5.brush.js"></script>
+  <style>
+    body { margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #1a1a1a; }
+    canvas { max-width: 95vw; max-height: 95vh; }
+  </style>
+</head>
+<body>
+<script>
+function setup() {
+  let c = createCanvas(700, 900, WEBGL);
+  angleMode(DEGREES);
+  brush.scaleBrushes(3);
+  noLoop();
+  randomSeed(826);
+  noiseSeed(826);
+
+  background("#2a4a2a");
+  translate(-width/2, -height/2);
+
+  // ── soft green bokeh background ──
+  // layered green washes to create depth
+  const greens = ["#3a6a3a", "#4a7a3a", "#5a8a4a", "#6a9a5a", "#4a7040", "#3a5a30"];
+  for (let i = 0; i < 40; i++) {
+    brush.fill(random(greens), random(30, 60));
+    brush.fillBleed(random(0.4, 0.7));
+    brush.fillTexture(0.3, 0.2);
+    let x = random(-50, 750);
+    let y = random(-50, 950);
+    let s = random(80, 250);
+    brush.circle(x, y, s, 0.5);
+    brush.noFill();
+  }
+
+  // lighter patches for bokeh highlights
+  for (let i = 0; i < 15; i++) {
+    brush.fill("#8ab870", random(20, 40));
+    brush.fillBleed(0.5);
+    brush.fillTexture(0.2, 0.1);
+    brush.circle(random(700), random(900), random(60, 150), 0.4);
+    brush.noFill();
+  }
+
+  // softer blue-green area on the right side
+  for (let i = 0; i < 8; i++) {
+    brush.fill("#5a8a8a", random(20, 35));
+    brush.fillBleed(0.5);
+    brush.fillTexture(0.2, 0.1);
+    brush.circle(random(400, 700), random(300, 700), random(100, 200), 0.4);
+    brush.noFill();
+  }
+
+  // ── the wire/branch — diagonal ──
+  brush.noField();
+  brush.set("rotring", "#6a6060", 0.7);
+  brush.line(80, 580, 620, 420);
+  // slight shadow
+  brush.set("rotring", "#4a4040", 0.4);
+  brush.line(80, 583, 620, 423);
+
+  // ── kingfisher body ──
+  // center the bird around x=350, y=440
+
+  // orange belly — the big round shape, watercolor wash
+  brush.fill("#d4762a", 230);
+  brush.fillBleed(0.15);
+  brush.fillTexture(0.5, 0.4);
+  brush.polygon([
+    [320, 400], [340, 370], [370, 360], [395, 370],
+    [405, 400], [410, 440], [405, 480], [395, 510],
+    [380, 530], [350, 535], [330, 520], [315, 490],
+    [310, 450]
+  ]);
+  brush.noFill();
+
+  // deeper orange layer
+  brush.fill("#c06020", 180);
+  brush.fillBleed(0.2);
+  brush.fillTexture(0.4, 0.3);
+  brush.polygon([
+    [325, 410], [345, 385], [375, 378], [400, 395],
+    [408, 440], [400, 500], [375, 530], [345, 525],
+    [325, 495], [318, 450]
+  ]);
+  brush.noFill();
+
+  // ── blue head and crown ──
+  brush.fill("#0068a0", 240);
+  brush.fillBleed(0.2);
+  brush.fillTexture(0.5, 0.4);
+  brush.polygon([
+    [310, 350], [320, 320], [340, 295], [365, 285],
+    [385, 290], [395, 310], [390, 340], [380, 360],
+    [365, 365], [340, 368], [320, 365]
+  ]);
+  brush.noFill();
+
+  // brighter teal overlay on crown
+  brush.fill("#007ab8", 200);
+  brush.fillBleed(0.15);
+  brush.fillTexture(0.6, 0.3);
+  brush.polygon([
+    [325, 330], [335, 305], [355, 290], [375, 292],
+    [385, 310], [380, 340], [360, 355], [335, 355]
+  ]);
+  brush.noFill();
+
+  // ── feather texture on head — fine strokes ──
+  brush.set("cpencil", "#005580", 0.8);
+  for (let i = 0; i < 25; i++) {
+    let x = random(325, 380);
+    let y = random(295, 350);
+    let angle = random(200, 250);
+    brush.flowLine(x, y, random(8, 18), angle);
+  }
+  // teal sparkle dots
+  brush.set("cpencil", "#00b0d0", 0.6);
+  for (let i = 0; i < 35; i++) {
+    let x = random(328, 378);
+    let y = random(298, 348);
+    brush.circle(x, y, random(1, 3), 0.2);
+  }
+
+  // ── white throat patch ──
+  brush.fill("#f0ece0", 220);
+  brush.fillBleed(0.15);
+  brush.fillTexture(0.3, 0.2);
+  brush.polygon([
+    [340, 358], [355, 352], [370, 358], [375, 372],
+    [365, 378], [345, 378], [335, 372]
+  ]);
+  brush.noFill();
+
+  // ── blue wing stripe ──
+  brush.fill("#0070a0", 220);
+  brush.fillBleed(0.2);
+  brush.fillTexture(0.4, 0.3);
+  brush.polygon([
+    [310, 400], [315, 380], [325, 370], [330, 390],
+    [325, 430], [318, 470], [308, 490], [300, 470], [305, 430]
+  ]);
+  brush.noFill();
+
+  // wing feather strokes
+  brush.set("cpencil", "#005878", 0.5);
+  for (let i = 0; i < 12; i++) {
+    let y = 390 + i * 8;
+    brush.line(308, y, 328, y - 5);
+  }
+
+  // ── dark tail feathers ──
+  brush.set("2B", "#1a2030", 0.8);
+  brush.spline([
+    [365, 520, 0.8],
+    [370, 550, 0.7],
+    [368, 580, 0.5],
+    [362, 600, 0.3],
+  ], 0.6);
+  brush.spline([
+    [375, 518, 0.7],
+    [380, 548, 0.6],
+    [378, 578, 0.4],
+    [374, 598, 0.3],
+  ], 0.6);
+
+  // ── beak — long, dark, pointed, prominent ──
+  // filled beak shape
+  brush.fill("#1a1820", 250);
+  brush.fillBleed(0.05);
+  brush.fillTexture(0.3, 0.2);
+  brush.polygon([
+    [340, 328], [310, 322], [280, 315], [258, 312],
+    [280, 322], [310, 333], [340, 340]
+  ]);
+  brush.noFill();
+  // outline strokes for definition
+  brush.set("rotring", "#0a0808", 1.0);
+  brush.spline([
+    [340, 328, 0.7],
+    [310, 322, 0.6],
+    [280, 315, 0.5],
+    [255, 311, 0.3],
+  ], 0.4);
+  brush.spline([
+    [340, 340, 0.6],
+    [310, 333, 0.5],
+    [280, 323, 0.4],
+    [255, 313, 0.3],
+  ], 0.4);
+  // center line
+  brush.set("rotring", "#0a0808", 0.5);
+  brush.line(340, 334, 260, 312);
+
+  // ── eye — bright black with tiny highlight ──
+  brush.set("rotring", "#0a0a0a", 0.6);
+  brush.circle(345, 320, 6, 0.1);
+  brush.set("rotring", "#f8f8f8", 0.3);
+  brush.circle(343, 318, 1.5, 0.1);
+
+  // orange eye ring
+  brush.set("cpencil", "#c06020", 0.3);
+  brush.circle(345, 320, 8, 0.3);
+
+  // ── tiny orange feet on the wire ──
+  brush.set("rotring", "#e05820", 0.5);
+  // left foot
+  brush.line(350, 530, 348, 545);
+  brush.line(348, 545, 342, 550);
+  brush.line(348, 545, 354, 552);
+  // right foot
+  brush.line(370, 525, 372, 540);
+  brush.line(372, 540, 366, 546);
+  brush.line(372, 540, 378, 546);
+
+  // ── orange feather texture on belly ──
+  brush.set("cpencil", "#b85a1a", 0.3);
+  for (let i = 0; i < 30; i++) {
+    let x = random(330, 400);
+    let y = random(390, 520);
+    brush.flowLine(x, y, random(5, 12), random(170, 200));
+  }
+
+  // lighter belly highlights
+  brush.set("cpencil", "#e8a050", 0.25);
+  for (let i = 0; i < 20; i++) {
+    let x = random(340, 390);
+    let y = random(400, 490);
+    brush.flowLine(x, y, random(4, 10), random(175, 195));
+  }
+
+  // ── final touches: soft light halo ──
+  brush.fill("#f8f0d0", 25);
+  brush.fillBleed(0.6);
+  brush.fillTexture(0.1, 0.1);
+  brush.circle(350, 420, 180, 0.4);
+  brush.noFill();
+}
+</script>
+</body>
+</html>

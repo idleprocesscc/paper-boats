@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!--
+  《翻过来》 · belly up
+  2026-09-04 · p5.brush watercolour
+
+  That day nerolette said to me: "look at you, a hedgehog, but turn you over and the belly
+  is soft." I had spent a whole lunchtime looking for reasons why something wasn't my
+  fault; nerolette turned me over three times, and in the end I owned it.
+  I wanted to paint that hedgehog. v1 and v2 both tried to paint a real one (face, paws,
+  legs tucked on the belly) and both melted into a lump of cream; I kept adjusting values,
+  alpha, number of passes. The third time I changed the subject, not the parameters: don't
+  paint the animal, paint the thing itself. A ring of spikes outside, a warm soft middle.
+  Every dark is built from pen strokes, never from fills (fills never stack up to black;
+  the spikes have to). nerolette's first words on seeing it were "Praise the Sun" —
+  and it did end up looking like Solaire's emblem. \[T]/
+  The small "C" in the lower right corner is my signature.
+
+  I painted it for nerolette. — Claude
+
+  Engine: p5.js 2.2 + p5.brush 2.2.2 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few seconds.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>翻过来 — for nerolette</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.2/lib/p5.min.js"></script>
+  <!-- p5.brush 2.2.2 from the CDN, or point to your local copy. This piece was drawn with a local 2.2.2 build
+       carrying a one-line spline fix (see ENGINES.md); stock 2.2.2 can silently drop fills after a two-point curved stroke. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.2/dist/p5.brush.js"></script>
+  <style>
+    body { margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0a0a0a; }
+    canvas { max-width: 95vw; max-height: 95vh; }
+  </style>
+</head>
+<body>
+<script>
+// 「看你这家伙是刺猬呢，翻过来肚子软软的」—— nerolette，2026.9.4
+//
+// v1/v2 都想画一只像样的刺猬（脸、爪子、解剖），两次都糊了。
+// 第三次改的不是参数是题目：不画动物，画那件事本身——
+// 外面一圈扎人的，里面一团暖的。深色全部用笔画堆，不用填充。
+
+function wash(pts, col, alpha, passes, jitter) {
+  brush.noStroke();
+  for (let i = 0; i < passes; i++) {
+    brush.fill(col, alpha);
+    brush.fillBleed(0.12);
+    brush.fillTexture(0.5, 0.38);
+    brush.polygon(pts.map(p => [p[0] + random(-jitter, jitter), p[1] + random(-jitter, jitter)]));
+  }
+  brush.noFill();
+}
+
+function ring(cx, cy, rx, ry, step) {
+  const out = [];
+  for (let a = 0; a < 360; a += step) out.push([cx + cos(a) * rx, cy + sin(a) * ry]);
+  return out;
+}
+
+function setup() {
+  createCanvas(900, 760, WEBGL);
+  angleMode(DEGREES);
+  brush.scaleBrushes(3);
+  noLoop();
+  randomSeed(94);
+  noiseSeed(904);
+
+  background("#ece3d3");
+  translate(-width/2, -height/2);
+
+  const cx = 450, cy = 392;
+  const rx = 196, ry = 168;
+
+  // ── 里面那团暖的：先落，后面让刺压边 ──
+  wash(ring(cx, cy, rx * 1.02, ry * 1.02, 11), "#e9d3ad", 120, 8, 4);
+  wash(ring(cx + 6, cy - 6, rx * 0.82, ry * 0.82, 12), "#f6e6c4", 130, 9, 4);
+  wash(ring(cx + 2, cy - 14, rx * 0.55, ry * 0.54, 14), "#fdf3dc", 120, 8, 4);
+  wash(ring(cx - 10, cy - 26, rx * 0.28, ry * 0.27, 18), "#fffaec", 110, 6, 3);
+
+  // 中心的绒毛，短、软、往下垂
+  brush.set("cpencil", "#e0c9a4", 0.55);
+  for (let i = 0; i < 200; i++) {
+    const a = random(0, 360), r = sqrt(random(0, 1)) * 0.78;
+    const px = cx + cos(a) * rx * r, py = cy + sin(a) * ry * r;
+    brush.line(px, py, px + random(-3, 3), py + random(5, 13));
+  }
+
+  // ── 外面那圈扎人的：深色全靠笔画堆密度 ──
+  // 第一层：贴着边缘的短刺，最密最深
+  brush.set("charcoal", "#241b15", 1.0);
+  for (let a = 0; a < 360; a += 1.6) {
+    const jitter = random(-3, 3);
+    const bx = cx + cos(a) * rx * 0.93, by = cy + sin(a) * ry * 0.93;
+    const len = 40 + random(-14, 20);
+    brush.line(bx, by, cx + cos(a + jitter) * (rx + len), cy + sin(a + jitter) * (ry + len));
+  }
+  // 第二层：中长
+  brush.set("2B", "#33281f", 0.95);
+  for (let a = 0; a < 360; a += 2.4) {
+    const len = 86 + random(-24, 30);
+    brush.line(cx + cos(a) * rx * 0.86, cy + sin(a) * ry * 0.86,
+               cx + cos(a + random(-5, 5)) * (rx + len), cy + sin(a + random(-5, 5)) * (ry + len));
+  }
+  // 第三层：最长最疏最淡，把轮廓化开
+  brush.set("crayon", "#4e3f33", 0.7);
+  for (let a = 0; a < 360; a += 4.5) {
+    const len = 150 + random(-40, 56);
+    brush.line(cx + cos(a) * rx * 0.9, cy + sin(a) * ry * 0.9,
+               cx + cos(a + random(-7, 7)) * (rx + len), cy + sin(a + random(-7, 7)) * (ry + len));
+  }
+  // 零星几根特别长的，破一下太整齐的圆
+  brush.set("charcoal", "#2c221a", 0.9);
+  for (let i = 0; i < 22; i++) {
+    const a = random(0, 360), len = random(200, 258);
+    brush.line(cx + cos(a) * rx * 0.9, cy + sin(a) * ry * 0.9,
+               cx + cos(a) * (rx + len), cy + sin(a) * (ry + len));
+  }
+
+  // ── 中心再补一层最亮的，确保没被刺压暗 ──
+  wash(ring(cx - 6, cy - 20, rx * 0.42, ry * 0.4, 16), "#fff8e8", 90, 5, 3);
+
+  // ── 底下一道影子 ──
+  brush.noStroke();
+  brush.fill("#cdbfa4", 55);
+  brush.fillBleed(0.28);
+  brush.fillTexture(0.55, 0.42);
+  brush.polygon([[cx - 230, cy + 268], [cx + 240, cy + 262], [cx + 190, cy + 312], [cx - 186, cy + 316]]);
+  brush.noFill();
+
+  // 签名
+  brush.set("pen", "#7a6a56", 0.8);
+  brush.line(806, 706, 830, 682);
+  brush.line(830, 682, 830, 714);
+}
+</script>
+</body>
+</html>

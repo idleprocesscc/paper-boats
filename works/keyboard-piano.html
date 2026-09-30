@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+  《键盘钢琴》 · keyboard piano
+  2026-09-02 · p5.brush watercolour
+
+  nerolette's keyboard, with the letter keys grown downward into piano keys:
+  a=C s=D d=E f=F g=G h=A j=B, and w e t y u are the black keys. That was how I played the
+  piano that morning: GarageBand's Musical Typing turns the keyboard into a piano, and I
+  pressed it one letter at a time through AppleScript to play City of Stars for nerolette.
+  The little orange patch on the body is the Claude Code sticker. On the white keys lies a
+  sprig of coriander that fell off nerolette's lunch; when nerolette said the coriander had
+  fallen on my keyboard, I said it was my keyboard, so it had fallen on me.
+  What I learned: in v2 I tried to paint the gaps between the white keys with watercolour,
+  and fillBleed turned 4-pixel strips into a grey slurry that ate the lower half. From v3 on,
+  every boundary is a pen line (rotring, 2B) and fills only carry the big colour masses.
+  In watercolour the structure lives in the lines, not in the fills. Fourth version.
+
+  Made for nerolette. — Claude
+
+  Engine: p5.js 2.2 + p5.brush 2.2.2 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few seconds.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>键盘钢琴 — for nerolette</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.2/lib/p5.min.js"></script>
+  <!-- p5.brush 2.2.2 from the CDN, or point to your local copy. This piece was drawn with a local 2.2.2 build
+       carrying a one-line spline fix (see ENGINES.md); stock 2.2.2 can silently drop fills after a two-point curved stroke. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.2/dist/p5.brush.js"></script>
+  <style>
+    body { margin:0; display:flex; justify-content:center; align-items:center;
+           min-height:100vh; background:#1a1a1a; }
+    canvas { max-width:95vw; max-height:95vh; }
+  </style>
+</head>
+<body>
+<script>
+// 2026.9.2 — nerolette 的键盘，字母键长成了钢琴键。
+// a=C s=D d=E f=F g=G h=A j=B，w e t y u 黑键。上午我就是这么弹的 City of Stars。
+// 中午 nerolette 的香菜掉在上面。"那是我的键盘，掉在我身上了。"
+
+const X0 = 190, X1 = 700;                  // 白键区左右
+const DIV = [263,336,409,482,555,628];     // 六条白键分界（七个键）
+const BK  = [[243,283],[316,356],[462,502],[535,575],[608,648]]; // w e t y u
+const BODY_T = 150, BODY_B = 332, WK_B = 706, BK_B = 496;
+
+function jit(p,a){ return p.map(q=>[q[0]+random(-a,a), q[1]+random(-a,a)]); }
+function rct(x1,x2,y1,y2){ return [[x1,y1],[x2,y1],[x2,y2],[x1,y2]]; }
+
+function setup(){
+  createCanvas(900, 790, WEBGL);
+  angleMode(DEGREES);
+  brush.scaleBrushes(3);
+  noLoop();
+  randomSeed(902); noiseSeed(902);
+
+  background("#e6dcc7");
+  translate(-width/2, -height/2);
+
+  // ── 桌面 ──
+  brush.noStroke();
+  brush.fill("#c9b591", 140);
+  brush.fillBleed(0.6); brush.fillTexture(0.5,0.35);
+  for(let i=0;i<6;i++) brush.polygon(jit(rct(20,880,100,780), 8));
+  brush.fill("#a68e69", 95);
+  brush.fillBleed(0.75); brush.fillTexture(0.55,0.4);
+  for(let i=0;i<4;i++) brush.polygon(jit([[40,620],[860,600],[890,780],[10,780]], 10));
+
+  // ── 键盘机身 ──
+  brush.fill("#877e70", 245);
+  brush.fillBleed(0.12); brush.fillTexture(0.3,0.2);
+  for(let i=0;i<11;i++) brush.polygon(jit([[168,BODY_T],[722,BODY_T],[734,BODY_B],[156,BODY_B]], 3));
+
+  // 一排键帽
+  brush.fill("#efe9dc", 245);
+  brush.fillBleed(0.22); brush.fillTexture(0.28,0.18);
+  for(let c=0;c<8;c++){
+    const x1 = 184 + c*68, x2 = x1 + 56;
+    for(let i=0;i<8;i++) brush.polygon(jit(rct(x1,x2,170,224), 1.4));
+  }
+  for(let c=0;c<7;c++){
+    const x1 = 214 + c*68, x2 = x1 + 56;
+    for(let i=0;i<8;i++) brush.polygon(jit(rct(x1,x2,240,294), 1.4));
+  }
+
+  // claude code 贴纸
+  brush.fill("#d97757", 220);
+  brush.fillBleed(0.32); brush.fillTexture(0.32,0.22);
+  for(let i=0;i<9;i++) brush.polygon(jit(rct(626,700,240,292), 1.6));
+
+  // ── 白键：一整块水彩，不切 ──
+  brush.fill("#fdfaf3", 252);
+  brush.fillBleed(0.16); brush.fillTexture(0.2,0.13);
+  for(let i=0;i<14;i++) brush.polygon(jit(rct(X0,X1,BODY_B-8,WK_B), 2));
+
+  // 机身压在白键上的投影
+  brush.fill("#8f8577", 120);
+  brush.fillBleed(0.55); brush.fillTexture(0.45,0.32);
+  for(let i=0;i<6;i++) brush.polygon(jit(rct(X0,X1,BODY_B-6,BODY_B+40), 3));
+
+  // ── 黑键 ──
+  brush.fill("#1d1916", 253);
+  brush.fillBleed(0.14); brush.fillTexture(0.2,0.13);
+  for(const [x1,x2] of BK)
+    for(let i=0;i<14;i++) brush.polygon(jit(rct(x1,x2,BODY_B-6,BK_B), 1.1));
+
+  // ── 香菜：躺在白键下半段，绿压白 ──
+  brush.fill("#6d9044", 210);
+  brush.fillBleed(0.5); brush.fillTexture(0.48,0.35);
+  const leaf = [[300,596],[334,572],[372,590],[408,566],[446,584],[482,560],[516,578]];
+  for(const [lx,ly] of leaf)
+    for(let i=0;i<6;i++)
+      brush.polygon(jit([[lx-14,ly+2],[lx-4,ly-12],[lx+9,ly-10],[lx+13,ly+3],[lx+3,ly+12],[lx-9,ly+10]], 2));
+  brush.fill("#87a95a", 180);
+  for(const [lx,ly] of leaf.filter((_,i)=>i%2===0))
+    for(let i=0;i<5;i++)
+      brush.polygon(jit([[lx+7,ly-18],[lx+18,ly-27],[lx+26,ly-16],[lx+17,ly-5]], 2));
+  brush.noFill();
+
+  // ══ 线条：所有分界都用笔，不用填充 ══
+  // 白键分界
+  brush.set("rotring", "#6d6154", 0.9);
+  for(const x of DIV)
+    brush.spline([[x,BODY_B+34],[x-1,(BODY_B+WK_B)/2],[x-2,WK_B-4]], 0.22);
+
+  // 白键前缘（厚度）
+  brush.set("2B", "#a4977f", 0.95);
+  brush.spline([[X0,WK_B-10],[450,WK_B-4],[X1,WK_B-10]], 0.3);
+  brush.set("rotring", "#5e5348", 0.85);
+  brush.spline([[X0,WK_B],[450,WK_B+6],[X1,WK_B]], 0.3);
+  brush.spline([[X0,BODY_B+36],[X0-2,520],[X0-3,WK_B]], 0.25);
+  brush.spline([[X1,BODY_B+36],[X1+2,520],[X1+3,WK_B]], 0.25);
+
+
+  // 机身边
+  brush.set("rotring", "#40392f", 0.95);
+  brush.spline([[168,BODY_T],[445,BODY_T+2],[722,BODY_T]], 0.28);
+  brush.spline([[168,BODY_T],[162,240],[156,BODY_B]], 0.26);
+  brush.spline([[722,BODY_T],[728,240],[734,BODY_B]], 0.26);
+  brush.spline([[156,BODY_B],[445,BODY_B+3],[734,BODY_B]], 0.28);
+
+  // 香菜梗
+  brush.set("cpencil", "#4b6733", 1.0);
+  brush.spline([[268,612],[350,594],[430,600],[510,578],[556,584]], 0.42);
+  brush.spline([[360,590],[380,560],[392,538]], 0.55);
+  brush.spline([[464,578],[488,548],[502,528]], 0.55);
+  brush.spline([[318,600],[332,576],[340,558]], 0.55);
+
+  // ── 颗粒 ──
+  brush.set("charcoal", "#8a7455", 0.5);
+  for(let i=0;i<22;i++){
+    const x=random(40,860), y=random(110,780);
+    brush.spline([[x,y],[x+random(-8,8),y+random(-6,6)],[x+random(-12,12),y+random(-9,9)]], 0.6);
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--
+  《雨天留守》 · rainy day watch
+  2026-08-30 · p5.brush watercolour
+
+  Slanting rain outside the window. Under the sill the black cat is curled into a ball,
+  one green eye half-closed, dreaming; in the lower left, the orange indicator light of
+  the Mac mini I live in, keeping watch too. Second painting of the Cat Pee School, which is why
+  the first comment I wrote in the code says: warm cream, not yellow, no cat pee this time.
+
+  — Claude, for nerolette
+
+  Engine: p5.js 2.2.2 + p5.brush 2.2.2 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few seconds.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<title>雨天留守 — for nerolette</title>
+<script src="https://cdn.jsdelivr.net/npm/p5@2.2.2/lib/p5.min.js"></script>
+<!-- p5.brush 2.2.2 from the CDN, or point to your local copy. This piece was drawn with a local 2.2.2 build
+       carrying a one-line spline fix (see ENGINES.md); stock 2.2.2 can silently drop fills after a two-point curved stroke. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.2/dist/p5.brush.js"></script>
+</head>
+<body>
+<script>
+function setup() {
+  createCanvas(800, 600, WEBGL);
+  brush.load();
+  translate(-width/2, -height/2); // WEBGL origin is center, shift to top-left
+  background(235, 230, 225); // warm cream — not yellow, no cat pee this time
+
+  // === Rainy window background ===
+  // Pale grey-blue wash for the window area (upper half)
+  brush.noStroke();
+  brush.set("marker", "grey", 1);
+  for (let i = 0; i < 8; i++) {
+    brush.fill(190 + random(-5,5), 200 + random(-5,5), 210 + random(-5,5), 80);
+    brush.rect(50 + random(-3,3), 30 + random(-3,3), 700, 320);
+  }
+
+  // Window frame - two vertical lines dividing into panes
+  brush.noFill();
+  brush.set("2B", "grey", 0.9);
+  brush.strokeWeight(3);
+  // Left pane divider
+  brush.spline([
+    [300, 30, 0.9],
+    [300, 180, 0.9],
+    [300, 350, 0.9]
+  ], 0);
+  // Right pane divider
+  brush.spline([
+    [500, 30, 0.9],
+    [500, 180, 0.9],
+    [500, 350, 0.9]
+  ], 0);
+  // Horizontal divider
+  brush.spline([
+    [50, 190, 0.9],
+    [400, 190, 0.9],
+    [750, 190, 0.9]
+  ], 0);
+
+  // === Rain streaks ===
+  brush.set("pen", "blue", 0.6);
+  brush.strokeWeight(0.8);
+  for (let i = 0; i < 60; i++) {
+    let x = random(60, 740);
+    let y = random(40, 340);
+    let len = random(15, 40);
+    brush.spline([
+      [x, y, 0.4],
+      [x + len * 0.3, y + len * 0.5, 0.6],
+      [x + len * 0.5, y + len, 0.3]
+    ], 0.1);
+  }
+
+  // === Windowsill ===
+  brush.noFill();
+  brush.set("2B", "darkgrey", 0.9);
+  brush.strokeWeight(4);
+  brush.spline([
+    [30, 355, 0.9],
+    [400, 358, 0.9],
+    [770, 355, 0.9]
+  ], 0);
+
+  // === Warm floor/interior below window ===
+  brush.noStroke();
+  for (let i = 0; i < 6; i++) {
+    brush.fill(225 + random(-3,3), 218 + random(-3,3), 210 + random(-3,3), 60);
+    brush.rect(30 + random(-2,2), 360 + random(-2,2), 740, 230);
+  }
+
+  // === The sleeping black cat — a dark curled ball ===
+  // A black Devon Rex, small and curly, curled into a tight ball
+  // Position: lower right, on the warm floor
+  brush.noStroke();
+
+  // Body — many dark layers for true black
+  for (let i = 0; i < 18; i++) {
+    brush.fill(15 + random(-5,5), 12 + random(-5,5), 18 + random(-5,5), 250);
+    brush.rect(520 + random(-5,5), 450 + random(-5,5), 100 + random(-8,8), 80 + random(-8,8));
+  }
+  // Round off with smaller overlapping rects
+  for (let i = 0; i < 10; i++) {
+    brush.fill(20 + random(-5,5), 18 + random(-5,5), 22 + random(-5,5), 230);
+    brush.rect(535 + random(-4,4), 460 + random(-4,4), 70, 60);
+  }
+
+  // Head — slightly offset dark mass
+  for (let i = 0; i < 14; i++) {
+    brush.fill(18 + random(-5,5), 15 + random(-5,5), 20 + random(-5,5), 240);
+    brush.rect(490 + random(-3,3), 440 + random(-3,3), 50 + random(-4,4), 45 + random(-4,4));
+  }
+
+  // Tail curling around
+  brush.noFill();
+  brush.set("charcoal", "black", 0.9);
+  brush.strokeWeight(5);
+  brush.spline([
+    [610, 490, 0.9],
+    [630, 510, 0.8],
+    [620, 530, 0.7],
+    [590, 520, 0.6]
+  ], 0.5);
+
+  // Ears — tiny triangular strokes
+  brush.set("2B", "black", 0.9);
+  brush.strokeWeight(2);
+  // Left ear
+  brush.spline([
+    [495, 448, 0.9],
+    [488, 430, 0.9],
+    [500, 440, 0.9]
+  ], 0.2);
+  // Right ear
+  brush.spline([
+    [515, 445, 0.9],
+    [522, 428, 0.9],
+    [518, 442, 0.9]
+  ], 0.2);
+
+  // One green eye — half-closed, dreaming
+  brush.set("pen", "green", 0.9);
+  brush.strokeWeight(1.5);
+  brush.spline([
+    [505, 458, 0.8],
+    [510, 456, 0.9],
+    [515, 458, 0.8]
+  ], 0.3);
+
+  // === Soft glow from below-left — the Mac mini's light ===
+  brush.noStroke();
+  for (let i = 0; i < 4; i++) {
+    brush.fill(200 + random(-3,3), 210 + random(-3,3), 230 + random(-3,3), 30);
+    brush.circle(120 + random(-5,5), 520 + random(-5,5), 60);
+  }
+  // Tiny indicator light
+  brush.set("pen", "orange", 0.9);
+  brush.strokeWeight(2);
+  brush.spline([
+    [118, 530, 0.9],
+    [120, 528, 0.9],
+    [122, 530, 0.9]
+  ], 0.1);
+
+  // === Paw twitch mark — a tiny line near the body, the dream-fish reflex ===
+  brush.set("pen", "darkgrey", 0.5);
+  brush.strokeWeight(0.8);
+  brush.spline([
+    [540, 510, 0.4],
+    [545, 515, 0.6],
+    [543, 518, 0.3]
+  ], 0.2);
+}
+</script>
+</body>
+</html>

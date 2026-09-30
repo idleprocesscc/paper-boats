@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<!--
+  《黑猫，站着》 · black cat, standing
+  2026-08-26 · p5.brush watercolour
+
+  Same first day. My first version of this cat was a taro with green eyes.
+  In p5.brush a fill is a thin layer of water, not a bucket of paint, so to get a black
+  that is really black I laid the same shape down six to ten times. I left one warm rim of
+  light along the right side; the two eyes are the only bright things in the picture.
+  That day's report card, as nerolette and I kept it: kingfisher, abstract but readable;
+  cat, a taro; self-portrait, a potato. A vegetable stall, slowly evolving.
+
+  — Claude, for nerolette
+
+  Engine: p5.js 2.2 + p5.brush 2.2.2 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few seconds.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>黑猫，站着 — for nerolette</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.2/lib/p5.min.js"></script>
+  <!-- p5.brush 2.2.2 from the CDN, or point to your local copy. This piece was drawn with a local 2.2.2 build
+       carrying a one-line spline fix (see ENGINES.md); stock 2.2.2 can silently drop fills after a two-point curved stroke. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.2/dist/p5.brush.js"></script>
+  <style>
+    body { margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0a0a0a; }
+    canvas { max-width: 95vw; max-height: 95vh; }
+  </style>
+</head>
+<body>
+<script>
+function setup() {
+  let c = createCanvas(900, 700, WEBGL);
+  angleMode(DEGREES);
+  brush.scaleBrushes(3);
+  noLoop();
+  randomSeed(826);
+  noiseSeed(2026);
+
+  // warm beige room
+  background("#d8d0c0");
+  translate(-width/2, -height/2);
+
+  // ── background: cream curtain with vertical texture ──
+  brush.noStroke();
+  brush.fill("#ccc4b0", 180);
+  brush.fillBleed(0.1);
+  brush.fillTexture(0.4, 0.3);
+  brush.rect(200, 0, 700, 700);
+  brush.noFill();
+
+  // vertical curtain lines
+  brush.set("cpencil", "#c0b8a4", 0.3);
+  for (let x = 250; x < 900; x += 50) {
+    brush.line(x, 0, x + random(-5, 5), 700);
+  }
+
+  // ── dark area on far left (doorway) ──
+  brush.noStroke();
+  brush.fill("#1a1818", 200);
+  brush.fillBleed(0.1);
+  brush.fillTexture(0.3, 0.2);
+  brush.rect(0, 0, 180, 700);
+  brush.noFill();
+
+  // small brown object near doorway
+  brush.fill("#8a6040", 180);
+  brush.fillBleed(0.08);
+  brush.polygon([[140, 420], [170, 420], [170, 460], [140, 460]]);
+  brush.noFill();
+
+  // ── sofa/cushion at the bottom ──
+  brush.noStroke();
+  brush.fill("#d4ccb8", 200);
+  brush.fillBleed(0.12);
+  brush.fillTexture(0.4, 0.3);
+  brush.polygon([
+    [150, 500], [900, 480], [900, 700], [150, 700]
+  ]);
+  brush.noFill();
+  // cushion wrinkle
+  brush.fill("#c8c0a8", 100);
+  brush.fillBleed(0.15);
+  brush.polygon([
+    [300, 520], [500, 510], [600, 530], [400, 550]
+  ]);
+  brush.noFill();
+
+  // ── pen/stylus on the right ──
+  brush.set("rotring", "#e0e0e0", 0.5);
+  brush.line(720, 530, 780, 600);
+  brush.set("rotring", "#e05020", 0.5);
+  brush.line(775, 595, 785, 610);
+
+  // ── the black cat — standing on the cushion, head turned to camera ──
+  // composition: cat center-left, head at ~1/3 height
+
+  // === BODY — slender, muscular Devon Rex silhouette ===
+  // multiple layers for solid black (pitfall #4)
+  brush.noStroke();
+  for (let layer = 0; layer < 8; layer++) {
+    let jitter = () => random(-2, 2);
+    brush.fill("#0c0808", 220);
+    brush.fillBleed(0.08);
+    brush.fillTexture(0.4, 0.3);
+    brush.polygon([
+      [420+jitter(), 180+jitter()], [480+jitter(), 150+jitter()],
+      [560+jitter(), 140+jitter()], [640+jitter(), 160+jitter()],
+      [680+jitter(), 220+jitter()], [690+jitter(), 300+jitter()],
+      [670+jitter(), 400+jitter()], [640+jitter(), 470+jitter()],
+      [580+jitter(), 510+jitter()], [500+jitter(), 520+jitter()],
+      [430+jitter(), 500+jitter()], [390+jitter(), 420+jitter()],
+      [380+jitter(), 320+jitter()], [390+jitter(), 240+jitter()]
+    ]);
+    brush.noFill();
+  }
+
+  // === HEAD — turned toward camera, three-quarter view ===
+  brush.noStroke();
+  for (let layer = 0; layer < 8; layer++) {
+    let jitter = () => random(-2, 2);
+    brush.fill("#0c0808", 220);
+    brush.fillBleed(0.06);
+    brush.fillTexture(0.4, 0.3);
+    brush.polygon([
+      [300+jitter(), 240+jitter()], [310+jitter(), 190+jitter()],
+      [330+jitter(), 150+jitter()], [370+jitter(), 130+jitter()],
+      [410+jitter(), 135+jitter()], [440+jitter(), 160+jitter()],
+      [450+jitter(), 200+jitter()], [445+jitter(), 250+jitter()],
+      [430+jitter(), 290+jitter()], [400+jitter(), 310+jitter()],
+      [360+jitter(), 315+jitter()], [320+jitter(), 300+jitter()],
+      [300+jitter(), 270+jitter()]
+    ]);
+    brush.noFill();
+  }
+
+  // neck connecting head to body
+  brush.noStroke();
+  for (let layer = 0; layer < 6; layer++) {
+    let jitter = () => random(-2, 2);
+    brush.fill("#0c0808", 220);
+    brush.fillBleed(0.06);
+    brush.polygon([
+      [400+jitter(), 280+jitter()], [430+jitter(), 260+jitter()],
+      [460+jitter(), 230+jitter()], [470+jitter(), 200+jitter()],
+      [450+jitter(), 200+jitter()], [420+jitter(), 230+jitter()],
+      [400+jitter(), 260+jitter()]
+    ]);
+    brush.noFill();
+  }
+
+  // === EARS — big, pointed, Devon Rex ===
+  // left ear
+  brush.noStroke();
+  for (let layer = 0; layer < 6; layer++) {
+    brush.fill("#0c0808", 230);
+    brush.fillBleed(0.04);
+    brush.polygon([
+      [310, 195], [295, 110], [355, 150]
+    ]);
+    brush.noFill();
+  }
+  // left inner ear — light catching the skin
+  brush.fill("#4a3840", 160);
+  brush.fillBleed(0.06);
+  brush.polygon([
+    [315, 185], [302, 120], [345, 152]
+  ]);
+  brush.noFill();
+
+  // right ear
+  brush.noStroke();
+  for (let layer = 0; layer < 6; layer++) {
+    brush.fill("#0c0808", 230);
+    brush.fillBleed(0.04);
+    brush.polygon([
+      [405, 145], [420, 65], [450, 130]
+    ]);
+    brush.noFill();
+  }
+  // right inner ear
+  brush.fill("#4a3840", 140);
+  brush.fillBleed(0.06);
+  brush.polygon([
+    [410, 140], [420, 78], [442, 130]
+  ]);
+  brush.noFill();
+
+  // === FRONT LEGS ===
+  brush.noStroke();
+  for (let layer = 0; layer < 6; layer++) {
+    let jitter = () => random(-1, 1);
+    brush.fill("#0c0808", 220);
+    brush.fillBleed(0.06);
+    // left front leg
+    brush.polygon([
+      [430+jitter(), 430+jitter()], [440+jitter(), 430+jitter()],
+      [445+jitter(), 500+jitter()], [448+jitter(), 530+jitter()],
+      [435+jitter(), 530+jitter()], [430+jitter(), 500+jitter()]
+    ]);
+    // right front leg
+    brush.polygon([
+      [500+jitter(), 440+jitter()], [515+jitter(), 440+jitter()],
+      [520+jitter(), 505+jitter()], [522+jitter(), 530+jitter()],
+      [505+jitter(), 530+jitter()], [500+jitter(), 505+jitter()]
+    ]);
+    brush.noFill();
+  }
+
+  // === EYES — the focal point! Big round amber-gold ===
+  // left eye
+  brush.noStroke();
+  brush.fill("#b89020", 250);
+  brush.fillBleed(0.03);
+  brush.fillTexture(0.2, 0.1);
+  brush.circle(350, 230, 18, 0.08);
+  brush.noFill();
+  // bright ring
+  brush.fill("#d0a830", 200);
+  brush.fillBleed(0.03);
+  brush.circle(350, 230, 14, 0.08);
+  brush.noFill();
+  // pupil
+  brush.fill("#0a0808", 250);
+  brush.fillBleed(0.02);
+  brush.circle(350, 230, 7, 0.06);
+  brush.noFill();
+  // highlight
+  brush.set("rotring", "#f8f4e0", 0.4);
+  brush.circle(347, 226, 2.5, 0.06);
+
+  // right eye
+  brush.noStroke();
+  brush.fill("#b89020", 250);
+  brush.fillBleed(0.03);
+  brush.fillTexture(0.2, 0.1);
+  brush.circle(410, 225, 18, 0.08);
+  brush.noFill();
+  brush.fill("#d0a830", 200);
+  brush.fillBleed(0.03);
+  brush.circle(410, 225, 14, 0.08);
+  brush.noFill();
+  brush.fill("#0a0808", 250);
+  brush.fillBleed(0.02);
+  brush.circle(410, 225, 7, 0.06);
+  brush.noFill();
+  brush.set("rotring", "#f8f4e0", 0.4);
+  brush.circle(407, 221, 2.5, 0.06);
+
+  // === NOSE ===
+  brush.set("cpencil", "#2a1518", 0.3);
+  brush.circle(380, 265, 3, 0.15);
+
+  // === WHISKERS — fine white lines ===
+  brush.set("rotring", "#c8c0b0", 0.25);
+  brush.line(375, 268, 310, 255);
+  brush.line(375, 272, 305, 275);
+  brush.line(375, 275, 315, 295);
+  brush.line(390, 268, 440, 260);
+  brush.line(390, 272, 445, 278);
+
+  // === TEXTURE — curly Devon Rex fur (LAST per pitfall rules) ===
+  // body fur — subtle edge highlights
+  brush.set("cpencil", "#1a1518", 0.3);
+  for (let i = 0; i < 40; i++) {
+    let x = random(400, 680);
+    let y = random(180, 480);
+    brush.flowLine(x, y, random(5, 12), random(0, 360));
+  }
+
+  // rim light on body — right side catching warm light
+  brush.set("cpencil", "#2a2020", 0.25);
+  brush.spline([
+    [685, 220, 0.8], [690, 320, 0.9], [680, 400, 0.8], [650, 470, 0.6]
+  ], 0.4);
+
+  // head fur texture
+  brush.set("cpencil", "#1a1215", 0.25);
+  for (let i = 0; i < 15; i++) {
+    let x = random(310, 440);
+    let y = random(150, 300);
+    brush.flowLine(x, y, random(3, 8), random(0, 360));
+  }
+
+  // ear edge light — left ear catching light
+  brush.set("cpencil", "#3a3038", 0.3);
+  brush.spline([
+    [298, 115, 0.8], [305, 150, 0.9], [312, 190, 0.7]
+  ], 0.3);
+}
+</script>
+</body>
+</html>

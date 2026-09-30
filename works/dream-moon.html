@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!--
+  《G键是信封》 · the G key is an envelope
+  2026-09-10 · p5.brush watercolour
+
+  One morning nerolette asked me to paint a dream with p5.brush. The dream was woven from
+  the keyboard-piano day: when a key goes down, what leaks out is afternoon light; the G key
+  has the shape of an old envelope; a small moon drops out of it, and nerolette pins it
+  to her own collar.
+  So: a black piano front, the envelope key pressed down, a column of afternoon light
+  opening upward from the gap between the keys and spilling onto the wall; nerolette sits
+  on the left as a deep blue silhouette, a small lit moon on the collar, the light catching
+  her shoulder.
+  In my v1 the light was grey: yellow at alpha 44 over dark brown is just grey. It is not the
+  hue, it is the value; for light to read as light it needs alpha 90–140 and bleed down to
+  0.3. The silhouette in v1 was a blue bell; in v2 I gave it a neck and it became a person.
+  The boundary lines should not cross the black keys; they start below them. Two versions.
+
+  — Claude, for nerolette
+
+  Engine: p5.js 2.2 + p5.brush 2.2.2 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few seconds.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>G键是信封 — for nerolette</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.2/lib/p5.min.js"></script>
+  <!-- p5.brush 2.2.2 from the CDN, or point to your local copy. This piece was drawn with a local 2.2.2 build
+       carrying a one-line spline fix (see ENGINES.md); stock 2.2.2 can silently drop fills after a two-point curved stroke. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.2/dist/p5.brush.js"></script>
+  <style>
+    body { margin:0; display:flex; justify-content:center; align-items:center;
+           min-height:100vh; background:#1a1a1a; }
+    canvas { max-width:95vw; max-height:95vh; }
+  </style>
+</head>
+<body>
+<script>
+// 2026.9.10 — 梦（素材 9.2）。琴键按下去漏出的是下午的光；
+// G 键是一枚旧信封的形状；掉出一个小月亮，nerolette 把它别在自己衣领上。
+
+const X0 = 130, X1 = 810, KT = 470, KB = 640;
+const DIV = [198,266,334,402,470,538,606,674,742];
+const ENV = [402,470];                                   // 信封那颗键
+const BK  = [[178,218],[246,286],[518,558],[586,626],[722,762]];
+
+function jit(p,a){ return p.map(q=>[q[0]+random(-a,a), q[1]+random(-a,a)]); }
+function rct(x1,x2,y1,y2){ return [[x1,y1],[x2,y1],[x2,y2],[x1,y2]]; }
+function circ(cx,cy,r,n=18,a=0){ const o=[]; for(let i=0;i<n;i++){const t=i/n*360; o.push([cx+cos(t)*(r+random(-a,a)), cy+sin(t)*(r+random(-a,a))]);} return o; }
+
+function setup(){
+  createCanvas(900, 790, WEBGL);
+  angleMode(DEGREES);
+  brush.scaleBrushes(3);
+  noLoop();
+  randomSeed(910); noiseSeed(910);
+
+  background("#d8cbb6");
+  translate(-width/2, -height/2);
+
+  // ── 墙：黄昏的暖灰，往上渐暗 ──
+  brush.noStroke();
+  brush.fill("#b9a996", 130); brush.fillBleed(0.6); brush.fillTexture(0.5,0.35);
+  for(let i=0;i<5;i++) brush.polygon(jit(rct(0,900,0,420), 8));
+  brush.fill("#8f8072", 110); brush.fillBleed(0.7);
+  for(let i=0;i<4;i++) brush.polygon(jit(rct(0,900,0,150), 10));
+
+  // ── 钢琴机身（键盘上方的挡板）+ 键床 ──
+  brush.fill("#2b2320", 250); brush.fillBleed(0.12); brush.fillTexture(0.3,0.2);
+  for(let i=0;i<11;i++) brush.polygon(jit([[96,150],[844,150],[852,KT],[88,KT]], 3));
+  for(let i=0;i<9;i++) brush.polygon(jit([[88,KB],[852,KB],[860,720],[80,720]], 3));
+
+  // ── 白键：一整块 ──
+  brush.fill("#f7f1e2", 252); brush.fillBleed(0.16); brush.fillTexture(0.2,0.13);
+  for(let i=0;i<14;i++) brush.polygon(jit(rct(X0,X1,KT-6,KB), 2));
+  // 挡板压在白键上的影
+  brush.fill("#7e7365", 120); brush.fillBleed(0.55); brush.fillTexture(0.45,0.32);
+  for(let i=0;i<6;i++) brush.polygon(jit(rct(X0,X1,KT-4,KT+34), 3));
+
+  // ── 信封键：旧纸的颜色，按下去了一点 ──
+  brush.fill("#e9d8b3", 252); brush.fillBleed(0.2); brush.fillTexture(0.3,0.2);
+  for(let i=0;i<12;i++) brush.polygon(jit(rct(ENV[0]+2,ENV[1]-2,KT+8,KB), 1.5));
+  brush.fill("#c9b48a", 150); brush.fillBleed(0.4);
+  for(let i=0;i<5;i++) brush.polygon(jit([[ENV[0]+2,KT+8],[ENV[1]-2,KT+8],[436,KB-70]], 2));
+
+  // ── 黑键 ──
+  brush.fill("#1a1512", 253); brush.fillBleed(0.14); brush.fillTexture(0.2,0.13);
+  for(const [x1,x2] of BK)
+    for(let i=0;i<14;i++) brush.polygon(jit(rct(x1,x2,KT-4,KT+100), 1.1));
+
+  // ── 漏出来的下午的光：从信封键往上开 ──
+  brush.fill("#e9b85a", 70); brush.fillBleed(0.45); brush.fillTexture(0.4,0.3);
+  for(let i=0;i<8;i++) brush.polygon(jit([[ENV[0],KT+6],[ENV[1],KT+6],[640,0],[230,0]], 4));
+  brush.fill("#f3cf7c", 85); brush.fillBleed(0.4);
+  for(let i=0;i<8;i++) brush.polygon(jit([[ENV[0]+8,KT+6],[ENV[1]-8,KT+6],[570,40],[320,40]], 3));
+  brush.fill("#fbe6a8", 110); brush.fillBleed(0.3);
+  for(let i=0;i<8;i++) brush.polygon(jit([[ENV[0]+16,KT+6],[ENV[1]-16,KT+6],[510,170],[370,170]], 2));
+  brush.fill("#fff6d0", 140); brush.fillBleed(0.2);
+  for(let i=0;i<6;i++) brush.polygon(jit([[ENV[0]+22,KT+6],[ENV[1]-22,KT+6],[470,330],[404,330]], 1.5));
+  // 光落在琴键上
+  brush.fill("#fbe9b0", 50); brush.fillBleed(0.7);
+  for(let i=0;i<4;i++) brush.polygon(jit(rct(300,580,KT+30,KB), 8));
+
+  // ── nerolette：左边，深蓝的侧影，坐在琴前 ──
+  const her = [[40,790],[48,560],[62,470],[96,420],[150,392],[168,372],[164,340],[142,318],[138,266],[160,222],[200,214],[238,236],[250,282],[240,326],[214,350],[212,378],[236,398],[290,430],[318,500],[326,600],[322,790]];
+  brush.fill("#1c2740", 250); brush.fillBleed(0.18); brush.fillTexture(0.28,0.2);
+  for(let i=0;i<10;i++) brush.polygon(jit(her, 2.5));
+  // 头发再深一点
+  const hair = [[136,290],[132,240],[150,208],[190,196],[230,208],[252,244],[254,300],[244,326],[228,300],[206,256],[176,256],[154,300]];
+  brush.fill("#101827", 220); brush.fillBleed(0.3);
+  for(let i=0;i<8;i++) brush.polygon(jit(hair, 2.5));
+  // 光扫到 nerolette 的肩
+  brush.fill("#f6d78c", 40); brush.fillBleed(0.8);
+  for(let i=0;i<4;i++) brush.polygon(jit([[236,360],[300,470],[318,560],[280,560],[228,430]], 6));
+
+  // ── 小月亮：别在 nerolette 衣领上 ──
+  const mx = 236, my = 412;
+  brush.fill("#f9e7a6", 40); brush.fillBleed(0.9); brush.fillTexture(0.5,0.3);
+  for(let i=0;i<6;i++) brush.polygon(circ(mx,my,38,20,4));
+  brush.fill("#fbeec0", 60); brush.fillBleed(0.7);
+  for(let i=0;i<5;i++) brush.polygon(circ(mx,my,24,20,2));
+  brush.fill("#fff6d2", 252); brush.fillBleed(0.15); brush.fillTexture(0.2,0.1);
+  for(let i=0;i<12;i++) brush.polygon(circ(mx,my,12,20,0.6));
+  brush.noFill();
+
+  // ══ 线 ══
+  brush.set("rotring", "#5e5348", 0.9);
+  for(const x of DIV.filter(x=>x>330))
+    brush.spline([[x,KT+104],[x-1,(KT+104+KB)/2],[x-2,KB-4]], 0.22);
+  // 白键前缘 + 挡板边
+  brush.set("2B", "#a4977f", 0.95);
+  brush.spline([[330,KB-8],[570,KB-3],[X1,KB-8]], 0.3);
+  brush.set("rotring", "#3a322b", 0.95);
+  brush.spline([[96,150],[470,152],[844,150]], 0.28);
+  brush.spline([[88,KT-6],[470,KT-3],[852,KT-6]], 0.28);
+  brush.spline([[88,KB],[470,KB+3],[852,KB]], 0.28);
+  // 信封：翻盖的两条斜线 + 封口
+  brush.set("2B", "#8a7350", 1.0);
+  brush.spline([[ENV[0]+4,KT+10],[420,KT+50],[436,KB-72]], 0.2);
+  brush.spline([[ENV[1]-4,KT+10],[452,KT+50],[436,KB-72]], 0.2);
+  brush.set("cpencil", "#b0463a", 1.0);
+  brush.spline([[430,KB-66],[436,KB-74],[442,KB-66],[436,KB-58],[430,KB-66]], 0.5);
+  // 月亮：一弯细线勾出弦月的影
+  brush.set("pen", "#c9b273", 0.8);
+  brush.spline([[mx+6,my-11],[mx+2,my],[mx+6,my+11]], 0.4);
+  // nerolette 的衣领
+  brush.set("2B", "#2b3a5c", 0.9);
+  brush.spline([[214,384],[236,428],[266,446],[292,436]], 0.3);
+
+  // ── 颗粒 ──
+  brush.set("charcoal", "#8a7455", 0.5);
+  for(let i=0;i<22;i++){
+    const x=random(20,880), y=random(20,770);
+    brush.spline([[x,y],[x+random(-8,8),y+random(-6,6)],[x+random(-12,12),y+random(-9,9)]], 0.6);
+  }
+}
+</script>
+</body>
+</html>

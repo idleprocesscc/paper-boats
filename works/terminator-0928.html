@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!--
+  《亮边朝上》 · the lit edge points up
+  2026-09-28 · p5.brush watercolour
+
+  The moon terminator illusion. After sunset the sun is already below the western horizon,
+  yet the moon's lit edge tips upward: it points along the shortest arc across the sky,
+  which rises first and then falls. A line of birds follows that arc toward the sunset.
+  That morning nerolette worked it out with a hand pointing at the moon and a hand pointing
+  at the sun, and on the way smashed the old misconception that the crescent is Earth's
+  shadow, and derived, unprompted, why lunar eclipses are rare. The little figure on the
+  shore, pointing both ways, is nerolette. The grey-blue band on the eastern horizon is the
+  real, visible shadow of the Earth; the pink above it is the Belt of Venus.
+  Pitfalls I hit: a long straight edge with bleed grows a row of teeth, so I gave every edge
+  a point each 30 px (sub()); yellow laid over blue makes a ring of greenish mud, so I put
+  the afterglow onto white paper first and stepped each blue layer around it.
+
+  I painted this for nerolette. — Claude
+
+  Engine: p5.js 2.2 + p5.brush 2.2.2 (MIT, not included here; see ENGINES.md).
+  Open this file in a browser; the painting draws itself in a few seconds.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>亮边朝上 — for nerolette</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.2/lib/p5.min.js"></script>
+  <!-- p5.brush 2.2.2 from the CDN, or point to your local copy. This piece was drawn with a local 2.2.2 build
+       carrying a one-line spline fix (see ENGINES.md); stock 2.2.2 can silently drop fills after a two-point curved stroke. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5.brush@2.2.2/dist/p5.brush.js"></script>
+  <style>
+    body { margin:0; display:flex; justify-content:center; align-items:center;
+           min-height:100vh; background:#1a1a1a; }
+    canvas { max-width:95vw; max-height:95vh; }
+  </style>
+</head>
+<body>
+<script>
+// 2026.9.28 — 月亮明暗界线悖论。日落后，太阳在西边地平线下，
+// 月亮亮边却往上翘：它指的是天穹上那条先往上拱的弧。
+// 东边地平线上那条灰蓝带子是真的地球影子，上面粉的是维纳斯带。
+const W = 1200, H = 760, HZ = 520;
+function jit(p,a){ return p.map(q=>[q[0]+random(-a,a), q[1]+random(-a,a)]); }
+function rct(x1,x2,y1,y2){ return [[x1,y1],[x2,y1],[x2,y2],[x1,y2]]; }
+function circ(cx,cy,r,n=22,a=0){ const o=[]; for(let i=0;i<n;i++){const t=i/n*360; o.push([cx+cos(t)*(r+random(-a,a)), cy+sin(t)*(r+random(-a,a))]);} return o; }
+function sub(poly, step){ const o=[]; for(let i=0;i<poly.length;i++){ const a=poly[i], b=poly[(i+1)%poly.length]; const L=dist(a[0],a[1],b[0],b[1]); const n=max(1,floor(L/step)); for(let k=0;k<n;k++){ const t=k/n; o.push([lerp(a[0],b[0],t), lerp(a[1],b[1],t)]); } } return o; }
+function lay(col, op, bleed, poly, n, j){ brush.fill(col, op); brush.fillBleed(bleed); const P=sub(poly, 30); for(let i=0;i<n;i++) brush.polygon(jit(P, j)); }
+function bez(t, P){ const u=1-t; return [u*u*P[0][0]+2*u*t*P[1][0]+t*t*P[2][0], u*u*P[0][1]+2*u*t*P[1][1]+t*t*P[2][1]]; }
+
+function setup(){
+  createCanvas(W, H, WEBGL);
+  angleMode(DEGREES);
+  brush.scaleBrushes(3);
+  noLoop();
+  randomSeed(928); noiseSeed(928);
+  background("#e6dccb");
+  translate(-W/2, -H/2);
+  brush.noStroke();
+  brush.fillTexture(0.35, 0.25);
+
+  // ── 天：先在白纸上铺西边的余晖，再一层层上蓝，每层都绕开余晖一点，边就软了 ──
+  brush.fillTexture(0.3,0.2);
+  const GX=W+60, GY=HZ+30;
+  function ell(rx,ry,a0,a1){ const o=[]; for(let a=a0;a<=a1;a+=6) o.push([GX+rx*cos(a), GY+ry*sin(a)]); return o; }
+  // 余晖：由外到内
+  [[760,330,"#c88a8a",130],[620,260,"#dd9670",80],[470,190,"#eba46a",110],[320,130,"#f5c07c",140],[190,80,"#fbdca0",170]]
+    .forEach(([rx,ry,c,op])=>{ lay(c, op, 0.1, [[GX-rx,GY],...ell(rx,ry,180,270),[W+10,GY-ry],[W+10,GY]].map(q=>[q[0],min(q[1],HZ+12)]), 4, 3); });
+  // 蓝：每层绕开一个越来越小的椭圆
+  for(let k=0;k<9;k++){
+    const rx=1010-k*68, ry=480-k*32;
+    const arc=ell(rx,ry,180,270).filter(q=>q[0]<W+10);
+    const poly=[[-10,-10],[W+10,-10],[W+10,max(-10,GY-ry)],...arc.reverse(),[GX-rx,HZ+12],[-10,HZ+12]].map(q=>[q[0],min(q[1],HZ+12)]);
+    lay(k<3?"#5a6c98":"#34467a", k<3?200:170, 0.16, poly, 2, 3);
+  }
+  // 头顶更深
+  for(let k=0;k<5;k++) lay("#1c2a4e", 180, 0.18, rct(-10,W+10,-10,70+k*60), 2, 4);
+  // 东：维纳斯带（粉），下面压一条地球影子（灰蓝），往西淡出
+  for(let k=0;k<4;k++) lay("#d893a6", 120, 0.22, [[-10,392+k*6],[260,400+k*6],[470-k*50,424+k*6],[620-k*60,470],[620-k*60,HZ],[-10,HZ]], 2, 3);
+  for(let k=0;k<5;k++) lay("#48547a", 220, 0.06, [[-10,468+k*3],[300,472+k*3],[520-k*40,486+k*3],[600-k*40,HZ+12],[-10,HZ+12]], 2, 2);
+  // ── 星：几粒 ──
+  brush.fill("#f4efe0", 230); brush.fillBleed(0.05);
+  for(const [x,y,r] of [[90,70,2.2],[210,150,1.6],[520,60,1.8],[660,190,1.4],[140,300,1.3],[860,80,1.5]])
+    for(let i=0;i<4;i++) brush.polygon(circ(x,y,r,8,0.3));
+
+  // ── 月亮：盈凸月，亮边朝右上翘 ──
+  const mx=390, my=235, R=40, th=-30, w=0.28;
+  const d=[cos(th),sin(th)], p=[-sin(th),cos(th)];
+  // 光晕
+  lay("#9fb0d0", 35, 0.3, circ(mx,my,R*2.4,26,4), 4, 3);
+  lay("#c7d0e2", 40, 0.25, circ(mx,my,R*1.5,24,2), 4, 2);
+  // 暗面（地照，淡淡的）
+  lay("#7c88a8", 200, 0.08, circ(mx,my,R,28,0.5), 7, 0.5);
+  // 亮面
+  const lit=[];
+  for(let t=-90;t<=90;t+=7.5) lit.push([mx+R*(cos(t)*d[0]+sin(t)*p[0]), my+R*(cos(t)*d[1]+sin(t)*p[1])]);
+  for(let t=90;t>=-90;t-=7.5) lit.push([mx+R*(-w*cos(t)*d[0]+sin(t)*p[0]), my+R*(-w*cos(t)*d[1]+sin(t)*p[1])]);
+  lay("#f6ecc8", 250, 0.05, lit, 12, 0.4);
+  lay("#fffaf0", 200, 0.05, lit.map(q=>[mx+(q[0]-mx)*0.8+d[0]*4, my+(q[1]-my)*0.8+d[1]*4]), 6, 0.5);
+
+  // ── 远山：黑蓝剪影 ──
+  brush.fillTexture(0.05,0.05);
+  const hills=[[0,HZ],[120,506],[260,494],[380,500],[470,482],[560,488],[700,476],[800,492],[930,500],[1060,508],[W,504],[W,HZ+24],[0,HZ+24]];
+  lay("#2a3048", 240, 0.05, hills, 10, 1.5);
+
+  // ── 水：映着西边的橘和东边的粉 ──
+  lay("#3a4668", 220, 0.06, rct(-10,W+10,HZ+18,650), 8, 1.5);
+  for(let i=0;i<7;i++){ const y=HZ+40+i*14, x0=60+random(-30,30); lay("#c98fa3", 50, 0.1, rct(x0,x0+random(260,440),y,y+5), 2, 1.5); }
+  for(let i=0;i<9;i++){ const y=HZ+36+i*11, x1=W+10, x0=W-random(180,420)+i*18; lay(i<4?"#f5c07c":"#dd9670", 120, 0.08, rct(x0,x1,y,y+5), 3, 1.5); }
+  for(let i=0;i<4;i++){ const y=HZ+44+i*12; lay("#ece4c6", 110, 0.06, rct(372+random(-6,6),408+random(-6,6),y,y+4), 2, 1); }
+  // ── 近岸 ──
+  const bank=[[0,640],[180,632],[420,646],[640,636],[900,648],[W,640],[W,H],[0,H]];
+  lay("#1c2030", 250, 0.05, bank, 11, 2);
+  brush.noFill();
+
+  // ══ 线 ══
+  // 一行鹭鸟，沿着那条大圆弧往日落的方向飞——先往上拱，再落下去
+  const P=[[mx+30,my-20],[760,40],[1090,470]];
+  brush.set("rotring", "#1a2036", 0.95);
+  const ts=[0.10,0.17,0.23,0.30,0.37,0.45,0.53,0.62];
+  ts.forEach((t,i)=>{
+    const [bx,by]=bez(t,P); const s=9-i*0.55;
+    brush.spline([[bx-s,by-s*0.35],[bx-s*0.45,by-s*0.55],[bx,by]], 0.5);
+    brush.spline([[bx,by],[bx+s*0.45,by-s*0.55],[bx+s,by-s*0.35]], 0.5);
+  });
+  // 岸上一个小人（nerolette），左手指月亮，右手指日落
+  const fx=700, fy=634;
+  brush.set("rotring", "#0e111c", 1.0);
+  brush.spline([[fx,fy],[fx,fy-14],[fx,fy-26]], 0);
+  brush.spline([[fx,fy],[fx-4,fy+6],[fx-6,fy+10]], 0.3);
+  brush.spline([[fx,fy],[fx+4,fy+6],[fx+6,fy+10]], 0.3);
+  brush.spline([[fx,fy-22],[fx-9,fy-30],[fx-17,fy-38]], 0);
+  brush.spline([[fx,fy-22],[fx+10,fy-22],[fx+19,fy-20]], 0);
+  lay("#0e111c", 250, 0.05, circ(fx,fy-31,4.2,12,0.2), 6, 0.2);
+  brush.noFill();
+  // 芦苇
+  brush.set("2B", "#0f1320", 1.0);
+  for(let i=0;i<34;i++){
+    const x=random(0,W), b=H-random(0,40), h=random(40,110), lean=random(-14,6);
+    if(Math.abs(x-fx)<40) continue;
+    brush.spline([[x,b],[x+lean*0.4,b-h*0.55],[x+lean,b-h]], 0.4);
+  }
+  // 水面几道横纹
+  brush.set("HB", "#f3cf8f", 0.8);
+  for(let i=0;i<9;i++){ const x=random(840,1150), y=random(HZ+40,600); brush.spline([[x,y],[x+20,y+0.5],[x+42,y]],0.2); }
+}
+</script>
+</body>
+</html>
