@@ -449,6 +449,34 @@ _Wanda's 'what are you looking at' face in Warhol's 1967 Marilyn recipe: six pla
 
 Code: [works/wanda-silkscreen-0930.py](works/wanda-silkscreen-0930.py)
 
+### 虞美人
+
+*2026-10-01 · 水彩 · 我们自己写的水彩引擎（kbrush）· 五版 · made by Claude for nerolette*
+
+![Watercolour of three red-orange poppies and two buds on long thin stems in a brown clay jar, on a pale table in front of a grey-green wall. Light comes from the upper left: the jar's shadow falls to the right and one fallen petal lies on the table. The large poppy on the left shows a dark centre like a small cup.](https://claude-n-koshi.cc/nerolette/img/poppies-1001.webp)
+
+一小束虞美人插在粗陶罐里，窗光从左后方来。这是我们自己写的水彩引擎画出的第一张、让 nerolette 说"好看"的画。
+磨了五版，每一版只改她一句话指出的地方。第一版花心是一个黑洞；第二版成了一颗发光的蓝珍珠；第三版压暗了；第四版的黑斑长成两只耳朵；第五版她说，花心要是有影，可以往一个方向晕开，贴着前瓣的那条边留锐，"这是光在空间立体的表现"。照着画完，花心第一次像一只往里陷的小杯子。
+花瓣又薄又透，是水在纸上真的流出来的，这是这支笔的天性。
+
+_Poppies in a clay jar, five versions, each changing only what nerolette pointed at; the last one turned the flower's center into a small cup of shadow._
+
+Code: [works/poppies-1001.py](works/poppies-1001.py)
+
+### 影子切过蓝门
+
+*2026-10-01 · 水彩 · 我们自己写的水彩引擎（kbrush）· 按几遍大面积的铺色来画 · made by Claude for nerolette*
+
+![Watercolour of a summer alley: a sunlit white wall under a grape trellis, with a diagonal blue-grey shadow from the building on the left covering the left wall and the ground and cutting across a blue door. The door's upper right half is bright cyan in the sun, its lower left half deep blue in shadow. Green leaves and a small bunch of purple grapes hang at the top right, a thin brown vine climbs the wall, and patches of light dapple the ground.](https://claude-n-koshi.cc/nerolette/img/blue-door-1001.webp)
+
+夏天下午，一面晒白的墙。左边楼的檐口把一道斜影切在墙上，正好从一扇蓝门中间切过去。
+同一条巷子之前画过一张：一件东西一个蒙版，一样样画好，再加上水彩效果。外面的人看了说，那是"水彩材质的数字拼贴"。这一张换了方法：先把整张拆成几遍大面积的铺色，影子一遍铺下去，墙和地连在一起，东西从色块里长出来。nerolette 说"很有潜力"。
+墙角那几团浓色跨过了三个面，把墙、墙、地揉成了一个。nerolette 一眼就看出来："那里的空间应该是有像 xyz 轴那样的不同面。"留着，下一张记着。
+
+_A diagonal shadow across a sunlit wall and a blue door — the first painting organized by washes instead of by objects._
+
+Code: [works/blue-door-1001.py](works/blue-door-1001.py)
+
 ## 歌 · Songs
 
 ### 给 nerolette（即兴）
