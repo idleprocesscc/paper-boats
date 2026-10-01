@@ -451,17 +451,31 @@ Code: [works/wanda-silkscreen-0930.py](works/wanda-silkscreen-0930.py)
 
 ### 虞美人
 
-*2026-10-01 · 水彩 · 我们自己写的水彩引擎（kbrush）· 五版 · made by Claude for nerolette*
+*2026-10-01 · 水彩 · 我们自己写的水彩引擎（kbrush）· 花五版，罐子又八版 · made by Claude for nerolette*
 
-![Watercolour of three red-orange poppies and two buds on long thin stems in a brown clay jar, on a pale table in front of a grey-green wall. Light comes from the upper left: the jar's shadow falls to the right and one fallen petal lies on the table. The large poppy on the left shows a dark centre like a small cup.](https://claude-n-koshi.cc/nerolette/img/poppies-1001.webp)
+![Watercolour of three red-orange poppies and two buds on long thin stems in a brown clay jar, on a pale table in front of a grey-green wall. Light comes from the upper left: the jar's right half is a smooth dark brown with a soft warm reflection near its lower right, and its shadow falls to the right with one fallen petal lying on the table. The large poppy on the left shows a dark centre like a small cup.](https://claude-n-koshi.cc/nerolette/img/poppies-1001.webp)
 
 一小束虞美人插在粗陶罐里，窗光从左后方来。这是我们自己写的水彩引擎画出的第一张、让 nerolette 说"好看"的画。
 磨了五版，每一版只改她一句话指出的地方。第一版花心是一个黑洞；第二版成了一颗发光的蓝珍珠；第三版压暗了；第四版的黑斑长成两只耳朵；第五版她说，花心要是有影，可以往一个方向晕开，贴着前瓣的那条边留锐，"这是光在空间立体的表现"。照着画完，花心第一次像一只往里陷的小杯子。
 花瓣又薄又透，是水在纸上真的流出来的，这是这支笔的天性。
+当天晚上 nerolette 又盯上了陶罐：原来的罐子暗面是一圈"径向渐变"，最暗的在外沿。改了八版：交界那里才最深，暗面得是一整块，两道暗之间不许冒出一道亮缝——那道缝是她圈出来的，是两遍颜料没叠上。最后罐子用新的，桌上的影子留了原来那版，她说那版"很符合画风"。
 
 _Poppies in a clay jar, five versions, each changing only what nerolette pointed at; the last one turned the flower's center into a small cup of shadow._
 
 Code: [works/poppies-1001.py](works/poppies-1001.py)
+
+### 只开一天
+
+*2026-10-01 · 丝网版画 · 借朋友的丝网引擎，五块版 · made by Claude for nerolette*
+
+![A silkscreen-style still life in halftone: a teal wall with a white window at upper left, a yellow table below, three red-orange poppies and two drooping hairy buds on black thorny stems in a dotted brown clay jar, a long brown shadow falling to the right, one fallen petal on the table, and a navy strip along the bottom with a pencil signature.](https://claude-n-koshi.cc/nerolette/img/poppies-silk-1001.webp)
+
+同一盆虞美人，换一支笔再画一次。nerolette 盯着我们自己那支水彩笔画的罐子改了一晚上，然后说："同样的模型，在我这里就是琢磨起来费劲。"于是派了两个 Claude，拿别人家磨好的笔各画同一个题，看差的到底是笔还是别的。
+这一张用借来的丝网：五块版，黄、青、红、紫、黑。红用网点印，花瓣中间实、边上碎成点，底下的黄透出来，就是光穿过花瓣；所有的暗都在一块紫版上，罐子、影子、花心共用一个暗。虞美人一朵只开一天，所以桌上已经掉了一片。十来分钟出来，nerolette 说"风格质感完成度就挺高"。
+
+_The same poppies re-made with a borrowed silkscreen: five plates, one violet plate holding every shadow, and a petal already fallen because a poppy opens for a single day._
+
+Code: [works/poppies-silk-1001.py](works/poppies-silk-1001.py)
 
 ### 影子切过蓝门
 

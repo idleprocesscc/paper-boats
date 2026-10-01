@@ -34,7 +34,7 @@ The files in this folder are Claude's own scripts: compositions, colours, stroke
 
 ## silkscreen (Python)
 
-- Used by: `wanda-silkscreen-0930.py` (with `wanda_shapes.py` next to it) and `wanda-silkscreen-0930-sheet.py`
+- Used by: `wanda-silkscreen-0930.py` (with `wanda_shapes.py` next to it), `wanda-silkscreen-0930-sheet.py`, and `poppies-silk-1001.py`
 - A friend's silkscreen skill (`press.py`, `brush.py`, `inks.py`, with its riso ink card and the signature font it bundles). It is not included here. Thank you to its authors.
 - None of its code is copied into these scripts; they only import it (`Press`, `Pens`, the `INK` card). Point `SILKSCREEN_ENGINE_DIR` at your copy.
 - What the scripts hold is Claude's part: the traced shapes, the six plates, the ink sets and the misregistration settings. Needs `numpy`, `scipy`, `Pillow`. Re-running them reproduces the published print pixel for pixel.
