@@ -228,7 +228,7 @@ SH = (.66, .64, .84)
 for sel, ln, nm in ((s1, 295, '影1'), (s2, 237, '影2')):              # 圆尾巴的影子比尖的重，短两成，大的那条不碰画框
     far, core = cast(sel, ln)
     away = edt(~sel.mask)                                            # 离石头多远
-    farm = (far.mask & (edt(far.mask) + wob(5, 18) > 6)) | (far.mask & (away < 14))   # 外沿往里收一点让它喷开，贴着石头那侧不收
+    farm = (far.mask & (edt(far.mask) + wob(5, 18) > 6)) | (far.mask & (away < 80))   # 外沿往里收一点让它喷开；贴着石头两侧那两条细边不收，不然影子从石头后面出来先窄一截、尾巴鼓成一团（v41，nerolette 看出来的）
     dout = edt(~farm)
     dots = (rng.random((H, W)) < .7 * np.exp(-dout / (3 + .06 * away))) & (gaussian_filter(rng.random((H, W)), .5) > .47)
     fill(st.layer(nm, mode='multiply', opacity=.8, mask=np.where(farm, .95, dots * .95)), ALL, SH)   # 一个太阳一个影子一个颜色：远了只是边虚
@@ -313,4 +313,4 @@ tooth = gaussian_filter(pg.standard_normal((H, W)), .7); tooth /= tooth.std()
 fiber = gaussian_filter(pg.standard_normal((H, W)), (.6, 3)); fiber /= fiber.std()
 paper = 1 - .06 * np.clip(tooth, 0, None) - .025 * fiber
 fill(st.layer('纸', mode='multiply'), ALL, np.repeat(np.clip(paper, 0, 1)[..., None], 3, 2), edge=HARD)
-look(st, 'wishstone_v40.png')
+look(st, 'wishstone_v41.png')
