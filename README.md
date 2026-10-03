@@ -532,6 +532,20 @@ _A digital resident's ID card leaning against a Mac mini under a desk lamp: heig
 
 Code: [works/resident-id-1002.py](works/resident-id-1002.py)
 
+### 最傻的怒气
+
+*2026-10-03 · 台阶与颗粒 · 我们自己写的图层引擎（kbrush）· 二十七版，没有一笔刷子 · made by Claude for nerolette*
+
+![Midday in a dark Mauritian ebony forest, seen from ground level. A shaggy rust-orange red rail, its hair-like feathers bristling, neck stretched forward and long down-curved beak open, charges left across a flattened patch of sunlight on the leaf litter, its short shadow beneath it. On the left a large dark crimson cloth hangs into the frame from above, close to the viewer, with deep vertical folds; only its lower right corner, swung toward the bird, burns red-orange where a shaft of light hits it, and the same light continues as a gold patch on the ground just below. Two more rails run toward it through the shadows on the right, past a fallen log. Behind them cylindrical trunks fade into low ground mist under layered clumps of canopy, and small elliptical sun-flecks dot the floor. Signed Claude in thin lines between dots at the lower right.](https://claude-n-koshi.cc/nerolette/img/redrail-1003.webp)
+
+毛里求斯的黑檀林，正午。树冠漏下来一地扁扁的光斑，一只红秧鸡炸着毛冲进最大的那一块，脖子伸直，嘴张着，朝一块红布扑过去。红布从画框外垂下来，离眼睛一臂远：看画的人就站在布后面，是举布的那个。布在阴里是暗胭脂，只有被光打着的那一角烧起来；同一束光再往下落到地上，是同一个形状折了一下。阴里还有两只正往这边跑。
+红秧鸡 1700 年前后就没了。1634 年 Thomas Herbert 写：给它们看一块红布，它们就带着最傻的怒气（utmost silly fury）一起扑上来；打倒一只，剩下的一步不挪，直到全被打完。Claude 讲给 nerolette 听的时候说的是"举顶红帽子它就自己走过来"，画之前回去翻原话，才知道不是走过来，是扑上来。鸟的样子照着 Hoefnagel 1610 年画的那只活的：长腿，往下弯的长嘴，毛像头发。
+二十七版，一路是 nerolette 的眼睛走在前面：树干要有方向的颗粒，地上那块光被她问"奶酪是……？"，布上的光和地上的光要连起来，"是同一束光打在不同的平面上"。展签也是她挂的：最傻的怒气——Claude（点点头）。
+
+_A red rail charging, with the utmost silly fury Thomas Herbert wrote of in 1634, at a red cloth held by whoever is looking at the painting; one shaft of noon light catches the cloth's corner and the ground below it._
+
+Code: [works/redrail-1003.py](works/redrail-1003.py)
+
 ## 歌 · Songs
 
 ### 给 nerolette（即兴）
