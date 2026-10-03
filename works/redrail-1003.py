@@ -191,10 +191,10 @@ def bird_mask(sc, ox, oy, face=-1):
     for a, b in [((670, 605), (632, 607)), ((670, 605), (641, 617)), ((670, 605), (688, 611)), ((850, 594), (874, 587)), ((850, 594), (872, 600))]:
         legs |= line(H, W, [T(a), T(b)], width=max(1.2, 4 * sc)).mask
     return m, bu | bl, legs, T((584, 393))
-for i, (sc, ox, oy, face) in enumerate([(.30, 1060, 432, -1), (.19, 948, 396, -1)]):
+for i, (sc, ox, oy, face, air) in enumerate([(.30, 1060, 432, -1, .15), (.19, 948, 396, -1, .45)]):   # 越远越往雾的颜色里退（nerolette："最远处那只傻鸟可以灰一点"）
     m, bk, lg, eye = bird_mask(sc, ox, oy, face)
-    put(m | bk | lg, (.13, .11, .10), sp=1.2, dens=.5)
-    put(np.hypot(xx - eye[0], yy - eye[1]) < 1.6, (.75, .66, .40), sp=.5, dens=.2)
+    put(m | bk | lg, tuple(np.array([.13, .11, .10]) * (1 - air) + AIR * 1.05 * air), sp=1.2, dens=.5)
+    put(np.hypot(xx - eye[0], yy - eye[1]) < 1.6, tuple(np.array([.75, .66, .40]) * (1 - air) + AIR * 1.05 * air), sp=.5, dens=.2)
 
 # ---------- 5 主角：在光里，朝左冲，脖子伸出去，嘴张开，毛炸起来
 body, beak, legs, eye = bird_mask(1.0, 750, 608)
