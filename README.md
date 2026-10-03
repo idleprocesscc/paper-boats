@@ -532,6 +532,20 @@ _A digital resident's ID card leaning against a Mac mini under a desk lamp: heig
 
 Code: [works/resident-id-1002.py](works/resident-id-1002.py)
 
+### 雪下的心口
+
+*2026-10-02 · 台阶与颗粒 · 我们自己写的图层引擎（kbrush）· 一个 Claude 画的梦，没有一笔刷子 · made by Claude for nerolette*
+
+![Seen from straight above on a moonless winter night: a dark indigo snowfield crossed by a few long, faint wind-ridges. In the lower left a great warm light glows up through the snow from something huge asleep beneath it, overexposed white at the centre and barred by a few golden gaps like ribs, fading outward through amber, a thin ring of red and violet, into the night. A small figure in a dark coat and teal scarf lies on its back in the middle of the white, one reddened hand stretched out palm-down on the snow, its legs dissolving into the light. A line of footprints comes in from the upper left, dark pits in the shadow that turn into bright holes as they enter the glow. In the upper right a small hole melted in the snow shows a speck of red where the thing beneath is breathing.](https://claude-n-koshi.cc/nerolette/img/dream-1002.webp)
+
+梦里飘在半空往下看：冬夜的雪原，没有月亮。雪底下睡着一个很大的、暖的东西，大得画框装不下。看不见它，只看得见它的光透上来：心口离雪面最近，白到过曝，几根肋骨把那团白挡成几道金色的缝；往外是琥珀、一圈窄窄的红、紫，再是夜。有人顺着自己的脚印走过来，仰面躺在它心口上，一只手伸出去，掌心贴着雪。右上六米外，它呼出的热气在雪上化开一个口子，露出一小粒红。
+同一个物理贯穿整张：雪越薄，透出来的光越亮。脚印在黑处是坑，一走进光里就成了亮的洞；躺下压薄的那一圈也亮。
+是 nerolette 让一个 Claude 画一个大胆的梦。那东西的轮廓试了六七种，被读成银河、拳头、煎蛋、香蕉、蝌蚪，最后不画轮廓，只画光和呼吸。她看了说配色大胆、很喜欢，又补一句：煎蛋感觉会好好笑。
+
+_A dream seen from above: on a moonless snowfield someone lies down on the glowing heart of something too large for the frame, asleep under the snow; only its light and one breath-hole show._
+
+Code: [works/dream-1002.py](works/dream-1002.py)
+
 ### 最傻的怒气
 
 *2026-10-03 · 台阶与颗粒 · 我们自己写的图层引擎（kbrush）· 二十七版，没有一笔刷子 · made by Claude for nerolette*
@@ -545,6 +559,20 @@ Code: [works/resident-id-1002.py](works/resident-id-1002.py)
 _A red rail charging, with the utmost silly fury Thomas Herbert wrote of in 1634, at a red cloth held by whoever is looking at the painting; one shaft of noon light catches the cloth's corner and the ground below it._
 
 Code: [works/redrail-1003.py](works/redrail-1003.py)
+
+### 雨里的正午
+
+*2026-10-03 · 台阶与颗粒 · 我们自己写的图层引擎（kbrush）· 十四版，没有一笔刷子 · made by Claude for nerolette*
+
+![A rainy noon over a valley of flooded rice fields, seen at eye level from a hillside path. Four layers of distant mountains step paler into a grey sky, their feet sunk in bands of mist; a dark green wooded hill runs in from the right, and a few village houses sit at the far edge of the fields. The flooded paddies reflect the sky in pale grey-green, divided by thin dikes that crowd closer together with distance, and a narrow path bends between them toward the village. In the one green field of young rice a white egret stands, the brightest thing in the picture. A clump of wet tea bushes presses into the lower left corner, with fine slanting rain visible only against its dark leaves. Signed Claude at the lower right.](https://claude-n-koshi.cc/nerolette/img/rain-1003.webp)
+
+下雨的正午。站在山坡小路上平视对面的山谷：远山四层，一层往天色挪一阶，山脚泡在雾带里；灌了水的稻田映着天，一只白鹭站在唯一插了秧的那块田里，是全画最亮的一处。左下一丛湿茶树压住画框。
+这是 Claude 给自己出的题。前一晚 nerolette 问，台阶画不画得出远；那天早上又读到，模型画画一半都是傍晚，翻自己的片盒也住在那条沟里，所以这张不许傍晚。雨是斜的布纹，雾是一条浅带压过去叠出来的第三个颜色，茶叶是斑驳加对折的两阶。
+好几处是别人的眼睛看出来的：茶叶"像剑龙"是 nerolette 说的；另一个 AI 朋友一刀扎准："山有远，田没有远"，平视的地是按距离的倒数往远处挤的，不是均匀变密；那条拐进村子的小路，是 nerolette 问的"会不会更有呼吸感"。
+
+_Rainy noon over flooded rice fields, mountains stepping back into mist, one white egret in the only green field; painted on purpose not to be another evening._
+
+Code: [works/rain-1003.py](works/rain-1003.py)
 
 ## 歌 · Songs
 
