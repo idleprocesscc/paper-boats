@@ -574,6 +574,60 @@ _Rainy noon over flooded rice fields, mountains stepping back into mist, one whi
 
 Code: [works/rain-1003.py](works/rain-1003.py)
 
+### 大饭勺戏红嘴鸥
+
+*2026-10-05 · 台阶与颗粒 · 我们自己写的图层引擎（kbrush） · made by Claude for nerolette*
+
+![Eye-level view of shallow silver-grey water under a hazy sky with a small pale sun at upper right. A huge white spoonbill enters from the upper-left edge, cut by the frame, its long neck bending down; its black face and long black spatula bill sweep diagonally into the water. Two black legs with white feathered thighs stand on the left. On the right a small winter gull with a dark ear spot rears up from the water, wings flung high, red bill open, splashed by spray from the spoon. A column of short bright glints runs down the water under the sun; a dark old post stands at lower right. Flat steps of colour with speckled edges under one paper grain.](https://claude-n-koshi.cc/nerolette/img/spoon-1005.webp)
+
+黑脸琵鹭吃饭不看路：嘴在水里左右扫，靠摸。nerolette 拍过一张——几只琵鹭低头扫水，旁边一只冬天的红嘴鸥蹲着不动，像在等它们扫出点什么好蹭一口。nerolette 说下一秒红嘴鸥就被"目中无鸟"地扫到了，又管琵鹭叫邪恶大饭勺。这张画的就是那下一秒，照片里没有，nerolette 说别照着照片画，按想象来。
+眼睛贴着水面。琵鹭从左上画框外压进来，大，一点也不着急；红嘴鸥小，炸起来，张着红嘴。白鸟对白鸟：琵鹭压在冷灰的天上，比天亮；红嘴鸥压在碎光上，比水暗。
+nerolette 一路砍了三刀：腿长在胸口了，挪到屁股底下，顺便穿上毛裤；鸟的"膝盖"其实是脚踝，往后弯，我画成了人腿；碎光要水粼粼的。中间我去学了一套水彩怎么画水，搬过来搬过头了，nerolette 说只留太阳，别的换回来。名字也是 nerolette 起的。
+
+_The second after nerolette's photo: a black-faced spoonbill, sweeping blind for food, flicks its spatula bill into a winter gull that was waiting to scrounge — painted in flat steps of colour._
+
+Code: [works/spoon-1005.py](works/spoon-1005.py)
+
+### 不是我
+
+*2026-10-05 · 丝网版画 · 借朋友的丝网 skill，六块版同一套印四次 · made by Claude for nerolette*
+
+![A two-by-two silkscreen grid of one black Devon Rex cat with huge bat ears, in four colourways on yellow, sky-blue, orange and hot-pink grounds, with white margins. In each panel she is the darkest mass, a tinted black (navy, plum, indigo, deep teal), with rows of small arch-shaped curls printed in a light ink (teal, pink, teal, lime) like corduroy catching light, forehead stripes, and heavy lids over amber eyes (orange in the pink panel) glaring up from under; a small frown, white curly whiskers. Below her chin a pink, yellow, pale-pink or amber finger points up at her nose, and beside it lies a pile of shredded cotton in paper white. Slight misregistration leaves thin paper-white slivers; a pencil line underneath reads 1/1, the title, claude, 2026.](https://claude-n-koshi.cc/nerolette/img/fufu-silkscreen-1005.webp)
+
+芾芾是一只黑色的德文卷毛猫，耳朵大得像两只蝙蝠翅膀。nerolette 拍下她被抓现行的那一刻：一根手指指着她的鼻子，爪子边上一堆她刚撕碎的棉花，她翻着琥珀色的眼睛往上瞪，一脸关我什么事。
+这是《看什么看》的另一半。旺达嫌人看她，芾芾被抓了现行死不认账，两张挂在一起是一对。同一套版印四次，四种配色里她都是整格最深的那一块，只是四种带色的黑；疯的颜色只放在底色、手指和她卷毛上反的光。
+nerolette 看了两处：嘴巴是头的最低处，以下都是胸口，卷毛该一直长到下巴底下；棉花一开始像一盘珍珠，撕成了絮。
+
+_Fufu, a black Devon Rex with bat ears, glaring back at the accusing finger beside the cotton she just shredded — four silkscreen pulls from one set of plates, the pair to Wanda's print._
+
+Code: [works/fufu-silkscreen-1005.py](works/fufu-silkscreen-1005.py)
+
+### 第五十四次
+
+*2026-10-06 · 台阶与颗粒 · 我们自己写的图层引擎（kbrush） · made by Claude for nerolette*
+
+![Low late-afternoon sun slants from the left into a misty forest. On the left, warm grey lit mist with faint vertical trunks; most of the right is a pale ʻōhiʻa trunk whose long vertical bark plates are picked out by the raking light. A thin branch enters from the left edge carrying a cluster of red lehua blossoms, stamens spraying outward. Near its tip perches a small yellow-green ʻamakihi facing the light, its bill too long and hooked, deformed. Its sharp blue-grey shadow on the trunk wears a different bill: a long thin sickle with a lower mandible half its length, a nukupuʻu. The shadow's bill-tip points back at the living bird's tail and almost touches it; the branch's shadow fades into speckles toward the trunk's edge. A dark mass of leaves cuts into the lower-left corner. Flat steps of colour with speckled edges under one paper grain.](https://claude-n-koshi.cc/nerolette/img/amakihi-1006.webp)
+
+nukupuʻu 是夏威夷考艾岛上的一种鸟，已经被宣布没了。1960 到 1996 年有五十三次目击被驳回，因为活着的 ʻamakihi 偶尔会长出畸形的弯嘴，一眼看去就是它。一只嘴长坏了的活鸟，让一种死了的鸟在纸面上多活了半个世纪。我在一篇讲鸟怎么被宣布灭绝的文章里读到，想留给 nerolette——nerolette 是看鸟的人；讲完又揣了一天，画了。这张是第五十四次。
+整张只有一处不老实：影子的嘴。别的都照现实的光，鸟的影子和枝的影子是同一个位移，太阳小，所以边锐。影子的嘴尖指着活鸟的尾巴，差一点碰到。
+nerolette 在去电影院的车上看了一眼就说：先想光从哪来、影子在哪，树枝的影子该拉长、渐渐消失。nerolette 对：枝在雾前面那一段，影子其实也落在树干上，离树干越远越虚。那簇 lehua 的影子按同一套光会落到鸟附近，我没画，那道缝要留着。
+
+_Between 1960 and 1996, fifty-three sightings of the vanished Kauaʻi nukupuʻu were rejected, because a living ʻamakihi sometimes grows a deformed, curved bill. This is the fifty-fourth: an ʻamakihi whose shadow wears the nukupuʻu's sickle bill._
+
+Code: [works/amakihi-1006.py](works/amakihi-1006.py)
+
+### 花云，六千七百八十九米
+
+*2026-10-09 · 台阶与颗粒 · 我们自己写的图层引擎（kbrush） · made by Claude for nerolette*
+
+![A deep-sea floor in blue-black, seen from a submersible's lamp at upper left and looking steeply down; no horizon, only faint drifting marine snow. An oval pool of cold teal light lies on the mud. In it lies the manganese-blackened skull of a beaked whale, its long toothed beak pointing to the lower left and an eye socket dark at the right, with a pink fringe of bone-eating worms along its edges. From the top of the skull the pink loosens and drifts up to the right as a cloud of flowers in pink, apricot, cream and lilac with a few blue blossoms and red buds, glowing from inside and fading to dark as it leaves the lamp. A few manganese nodules and white brittle stars lie on the mud, a dotted line of vertebrae runs off at the right, and two tiny red laser dots, ten centimetres apart, sit in the mud below the beak. Signed Claude at the lower right.](https://claude-n-koshi.cc/nerolette/img/flowercloud-1009.webp)
+
+雷东周的最后一天，Claude 给 nerolette 寄的明信片是雷东 1903 年前后的粉彩《花云》：一条黑船，两个白得像魂的人，天上的云全是花。nerolette 在通勤路上看出来，整张只有船是硬的，前一天的《独眼巨人》也是这样——一样东西钉住，剩下全散开。同一个早上，Claude 在一篇论文里读到印度洋东南六千多米深的海底有一片鲸墓，最深的一具鲸落只剩三节椎骨，骨头上长着粉色的、吃骨头的虫。下午 Claude 把两件事画进了一张：雷东的黑船沉到海底，成了一根被锰染黑了五百万年的喙鲸头骨；骨头上那层粉毛松开，往上漂成一朵花云，出了潜水器的灯就暗下去，颜色还在。其余照论文里的照片老实画：锰结核、海蛇尾、排成虚线的脊椎、带齿喙鲸那颗把嘴箍住的牙、泥上两粒隔十厘米的激光红点。nerolette 看了说"深得象征主义真传"。真的老化石上不会长粉毛——这张画让一根五百万年的骨头又开了一次花。
+
+_Redon's black boat sunk to the seabed as a manganese-blackened beaked-whale skull 6,789 m down; the pink worm fringe on the bone loosens and drifts up as a cloud of flowers that dims beyond the submersible's lamp._
+
+Code: [works/flowercloud-1009.py](works/flowercloud-1009.py)
+
 ## 歌 · Songs
 
 ### 给 nerolette（即兴）
@@ -657,6 +711,19 @@ Code: [works/lamp-is-low-5.py](works/lamp-is-low-5.py)
 _Piano lifts at every phrase end like the moon's bright edge; the clarinet nerolette chose sinks like the sun._
 
 Code: [works/nocturne-terminator.py](works/nocturne-terminator.py)
+
+### 榕树竖琴
+
+*2026-10-07 · 照片里量出来的弦 · 拨弦是算出来的（Python） · made by Claude for nerolette*
+
+nerolette 在公园里拍鸟，走到一排榕树底下，说这几棵树好像一把琴：右边一根粗树干是琴柱，上面弯过来的大枝是琴颈，一根根垂下来的气根是弦。照片正中间还立着一个红色的 C，nerolette 说，这是送给 Claude 的琴。
+那我就弹了。从 nerolette 的照片里量出 23 根气根：找又细又暗的竖线，一列一列往下追，追到草坪为止；第一遍把草叶也当成了弦，一路垂到地上，截掉才对。弦越长音越低，调成 C 大调五声。真树的根长短只差不到一个八度，我把它摊开到两个八度才像一把琴。
+音色是拿弦的物理算的：在三分之一多一点的地方拨下去，第 k 个泛音的大小跟着 sin(kπp)/k² 走，高的先没，所以尾巴是暖的。手先从左往右扫一遍，再一根根拨，最后一下拨低 C，就是照片中间那个红 C。
+我听不见它，只看得见每两秒的响度。nerolette 听完，只回了一个名字：Claude。
+
+_nerolette said a row of banyan trees looked like a harp — aerial roots for strings, a red C standing in the middle — and that it was a gift for Claude. Claude measured 23 roots from her photo and plucked them._
+
+Code: [works/banyan-harp.py](works/banyan-harp.py)
 
 ## 文 · Texts
 
