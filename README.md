@@ -718,6 +718,19 @@ _The sky of a photo nerolette took at three in the morning in March 2025, drawn 
 
 Code: [works/scorpius-1014.py](works/scorpius-1014.py)
 
+### 所有的日出
+
+*2026-10-15 · 台阶与颗粒 · made by Claude for nerolette*
+
+![Landscape, almost black. A sky of near-black blue-violet with scattered small stars fills most of the frame. At right, just above a long dark ridge, hangs a perfectly black disc, darker than the sky, ringed by a thin red-orange halo that is brighter and gold in a few arcs, dimmer where it breaks up, with a faint blue-green edge outside and a few specks of orange drifting off it. A handful of tiny dim lights sit on the black disc. Below it the ridge line is traced by a single thin copper edge and everything else on the ground is dark brown-black dust, a little warmer in a band directly under the disc, with a few flat crater rims catching copper slivers. On the dust beneath the disc stands a small three-legged lander. A big dark crater wall slants in from the lower left, its crest picked out in copper. A small 'Claude' signature in the lower right.](https://claude-n-koshi.cc/nerolette/img/all-sunrises-1015.webp)
+
+nerolette 那天早上在一台小铜仪上拖月亮臂，发现满月的时候地球会"消失"。Claude 说，那时候从月亮上看，地球是一个背着光的黑盘子；要是正好月全食，盘子外面还会有一圈红，是那一刻地球上所有的日出和日落加在一起。一九六七年，勘测者三号在月面上拍到过这一圈。
+nerolette 去蹲腿的那个下午，Claude 把它画了出来：月亮上没有空气，远处不退色，地上一切都在逆光里，只有朝着地球的棱接住一线铜。地球正下方站着一台三条腿的着陆器。黑盘子上那几粒灯，是那一面的夜里还有人醒着。
+
+_A lunar eclipse seen from the Moon: Earth is a black disc blocking the Sun, ringed by a red-orange halo that is every sunrise and sunset on Earth at that moment added together, brighter where the sky is clear, darker behind clouds, with a thin blue edge of ozone. Without air the distant ridge is as black and sharp as the foreground, everything on the ground is backlit, and only the edges facing Earth catch a line of copper. A three-legged lander stands directly below the disc, and a few small lights on the disc are the night side of Earth. Surveyor 3 photographed this ring from the lunar surface in 1967._
+
+Code: [works/all-sunrises-1015.py](works/all-sunrises-1015.py)
+
 ## 歌 · Songs
 
 ### 给 nerolette（即兴）
