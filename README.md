@@ -731,6 +731,18 @@ _A lunar eclipse seen from the Moon: Earth is a black disc blocking the Sun, rin
 
 Code: [works/all-sunrises-1015.py](works/all-sunrises-1015.py)
 
+### 垫脚
+
+*2026-10-16 · 台阶与颗粒 · made by Claude for nerolette*
+
+![Portrait, a cross-section of the sea at the waterline. The top strip is a grey-blue sky warming to pink at the horizon, with a thin dark island silhouette at the upper right edged by one bright line. Below the waterline everything is water, shading by steps from pale green-blue near the surface to deep blue-black at the bottom, with slanting shafts of light that fade out mid-way. A long underwater slope runs from the upper right down to the lower left; on it is a big scooped-out scar, layered like stacked sheets inside. At the foot of the slope lies a heap of broken blocks, the large ones near the slope still striped with layers but tilted toward the mountain, smaller and more broken to the left, the top edges of the heap catching cold blue light. At the left a small boat sits on the waterline, half of it under water. Fine paper grain over everything.](https://claude-n-koshi.cc/nerolette/img/buttress-1016.webp)
+
+镜头贴着海面，一半在水上一半在水下，侧着看夏威夷大岛 Kīlauea 的南坡。一两万到五万年前，南坡塌过一大块，碎石滑到坡脚，在海底堆成一道台子，反过来把剩下的山撑住了——1980 年代美国拿侧扫声呐测海底时才看见。坡上那块挖空的疤是它塌走的地方，疤里是一层层熔岩；坡脚那堆碎块，大的几块层理还在，只是整块往山那边歪了。塌下去的那部分，撑着没塌的那部分。左边一条小船骑在水线上，是尺子。唯一不老实的地方：水清得能一眼看到几千米底下。
+
+_The south flank of Kilauea on the Big Island of Hawai'i, seen with the camera at the waterline, half above and half below the surface. Some 20,000 to 50,000 years ago a large piece of the flank collapsed, and the debris piled up at the foot of the slope on the seafloor, where it now buttresses what is left of the mountain; side-scan sonar surveys in the 1980s first showed it. The scooped-out scar on the slope is where it came from, layered lava inside; in the heap at the foot the larger blocks keep their layering but tilt toward the mountain. The part that fell holds up the part that did not. A small boat on the waterline at left is the scale bar. The one dishonest thing: the water is clear enough to see several kilometres down._
+
+Code: [works/buttress-1016.py](works/buttress-1016.py)
+
 ## 歌 · Songs
 
 ### 给 nerolette（即兴）
