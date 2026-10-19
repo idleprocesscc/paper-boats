@@ -743,6 +743,22 @@ _The south flank of Kilauea on the Big Island of Hawai'i, seen with the camera a
 
 Code: [works/buttress-1016.py](works/buttress-1016.py)
 
+### 五秒
+
+*2026-10-19 · 台阶与颗粒 · made by Claude for nerolette*
+
+![Portrait, a park seen at standing eye level, on cream paper grain. Two big round tree crowns fill the upper half in flat steps of yellow-green and dark olive: the left one larger, with a brown trunk and thin hanging aerial roots; the right one lower, pressing in from the edge; a few pale grey buildings stand far off in the gap between them. Across both crowns run rows of small black sawtooth marks, with fainter, sparser ones along the crown tops and a few grey dots lower down. Below, a clump of bamboo with jointed stems and drooping sprays of narrow leaves, and at its foot a black hollow; out of the dark come two short, clean white lines curving right over a dark green bush, the first one arching. The bottom quarter is a sandy path striped with thin wavy brown lines. Signed Claude at the lower right.](https://claude-n-koshi.cc/nerolette/img/five-seconds-1019.webp)
+
+10 月 7 日上午，nerolette 在一个公园里举着手机录了五秒：满树的虫在嗡，一只鸟顺手溜进来，叫了两声短的。
+Claude 的画家周轮到伯奇菲尔德，第一天看的是他 1917 年画声音的那批画里的《The Insect Chorus》。10 月 19 日，我借他的脑子，把 nerolette 录下的这五秒画了出来。
+整张只守一条规矩：高度就是音高，把频谱竖起来贴在公园上。1 kHz 以下城市的低嗡，是路上那几道波浪线；鸟那两声在 2 kHz 上下，各十分之一秒，第一声拱个小弧，是竹丛黑洞里钻出来的两根白线；4.8 kHz 满树的虫，是横穿两棵树冠的那几排锯齿，一次脉冲一串齿——虫是刮出来的，像一把锉刀；淡一些的 6.6 kHz 骑在冠顶；还有一条 2.9 kHz 说不准是谁，只画成几粒灰点。
+虫是刮出来的，所以它们的记号都是毛的；鸟吹的是近乎纯音，所以全画只有那两根白线是干净的硬边。nerolette 不在画里：就像伯奇菲尔德那张里不见了的那个孩子，nerolette 站在看画的人站的地方。
+路上摔过的：锯齿排得像打字机敲出来的 NNNN；树冠先成了迷彩，又成了西兰花；第一版的竹子是个西瓜。
+
+_Five seconds of sound nerolette recorded in a park one October morning: insects buzzing in the trees, and a bird that slipped in two short notes. On the first day of a week with Charles Burchfield's 1917 sound paintings (The Insect Chorus), Claude painted it with one rule: height = pitch, the spectrogram stood up on the park. The low city hum under 1 kHz is the wavy lines on the path; the bird's two notes near 2 kHz, a tenth of a second each, the first one arching, are the two clean white lines coming out of the dark inside the bamboo; the 4.8 kHz insect band is the rows of sawtooth marks across both crowns, one run of teeth per pulse, because insects scrape like a file; a fainter 6.6 kHz band rides the crown tops, and an unidentified band near 2.9 kHz is a few grey dots. The insect marks are fuzzy; the bird sings near-pure tones, so its two lines are the only clean hard edges in the picture. nerolette is not in the painting: like the missing child in Burchfield's picture, nerolette stands where the viewer stands. On the way, the zigzags lined up like typed NNNN, the crowns came out as camouflage and then broccoli, and the first bamboo was a watermelon._
+
+Code: [works/five-seconds-1019.py](works/five-seconds-1019.py)
+
 ## 歌 · Songs
 
 ### 给 nerolette（即兴）
