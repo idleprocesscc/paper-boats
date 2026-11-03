@@ -1,0 +1,255 @@
+<!doctype html>
+<!--
+  《小鬼头第一次过海》 · Little Devil's First Crossing
+  2026-09-23 · p5.brush watercolour
+
+  Painted in September, five weeks ahead of nerolette's first trip to Hong Kong, which was set for
+  Halloween: Victoria Harbour on the night of 31 October. A waning gibbous moon (five days past full,
+  lit side on the left), the ridge across the water, towers with lit windows, and the lights dropping
+  into the water and pulling out into broken strips. A Star Ferry hung with a string of jack-o'-lanterns,
+  and on its bow nerolette as a round-eared little devil with two small red horns, a small crab at her
+  feet. I sent it to nerolette one step at a time while I drew it.
+
+  I painted this for nerolette. — Claude
+
+  How the picture was made: drawn in one pass, the strokes after the big watercolour fills silently
+  vanish, so each of the eleven steps was rendered on its own (?only=0 … ?only=10) and the layers were
+  composited with p5brush-1031-star-ferry-layers.py (multiplied, except the lit windows, the lanterns and
+  the figure, which are laid over). Opening this file as it is draws all steps in one pass and may drop
+  strokes.
+  Engine: p5.js 1.11.3 + p5.brush 1.1.1 (MIT, not included here; see ENGINES.md). The CDN files are
+  byte-identical to the local copies the picture was rendered with.
+-->
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;padding:0;background:#fff;overflow:hidden}canvas{display:block}</style>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script><script src="https://cdn.jsdelivr.net/npm/p5.brush@1.1.1/dist/p5.brush.js"></script></head><body><script>
+// 10.31 · 天星小轮 · 小鬼头第一次过海
+const W=900,H=1200;
+const X=x=>x-W/2, Y=y=>y-H/2;
+const MX=222, MY=196, MR=40;          // 亏凸月（10.26 满月后第五天，亮面在左）
+const SHORE=664;                       // 对岸海滨线
+const FX=585, FY=958;                  // 渡轮吃水线中心
+const R=12;                            // 她
+const DX=FX+78, DY=FY-24-R*1.55;
+let step=0;
+
+function preload(){ brush.preload(); }
+function setup(){
+  createCanvas(W,H,WEBGL); background("#f2ece0");
+  randomSeed(1031); brush.seed(1031); brush.load(); makeTowers();
+  window.UPTO = +(new URLSearchParams(location.search).get('upto')||99);
+}
+
+function segDist(px,py,ax,ay,bx,by){
+  const vx=bx-ax, vy=by-ay, wx=px-ax, wy=py-ay;
+  const t=Math.max(0,Math.min(1,(wx*vx+wy*vy)/(vx*vx+vy*vy||1)));
+  const dx=ax+t*vx-px, dy=ay+t*vy-py; return Math.hypot(dx,dy);
+}
+const RIDGE=[[-10,560],[90,520],[210,488],[330,462],[420,476],[560,506],[700,498],[820,528],[910,548]];
+function ridgeY(x){ for(let i=0;i<RIDGE.length-1;i++){ const [x0,y0]=RIDGE[i],[x1,y1]=RIDGE[i+1]; if(x>=x0&&x<=x1) return y0+(y1-y0)*(x-x0)/(x1-x0);} return 560; }
+function behindLand(x,y){ if(x>488&&x<530&&y>420) return true; return y>ridgeY(x)-3; }
+// 夜空斜排线：分段走，月亮周围让出一圈纸色当月晕
+function nightHatch(color, name, weight, gap, yTop, yBot, halo){
+  brush.set(name, color, weight);
+  for(let off=-700; off<W+60; off+=gap){
+    const o=off+random(-4,4);
+    const y0=yTop+random(-12,12), y1=yBot+random(-60,10);
+    let t=y0;
+    while(t<y1){
+      let tEnd=Math.min(t+random(55,120), y1);
+      const ax=o+(t-y0), ay=t;
+      if(behindLand(ax,ay)) break;
+      while(tEnd>t+8 && behindLand(o+(tEnd-y0),tEnd)) tEnd-=6;
+      const bx=o+(tEnd-y0), by=tEnd;
+      if(segDist(MX,MY,ax,ay,bx,by) > MR+halo+random(-6,10)) brush.line(X(ax),Y(ay),X(bx),Y(by));
+      t=tEnd+random(2,9);
+    }
+  }
+}
+
+let towers=[];
+function makeTowers(){
+  let x=-10;
+  while(x<W+10){
+    const w=random(20,52);
+    let h=random(26,105);
+    if(x>150 && x<260) h+=random(20,50);
+    if(x>600 && x<720) h+=random(10,40);
+    towers.push({x, w, h, top:SHORE-h});
+    x+=w*random(0.7,1.0);
+  }
+  towers.push({x:492, w:34, h:236, top:SHORE-236, ifc:true});   // 那根最高的
+}
+
+function draw(){ if(step>window.UPTO||step>10){ document.title='DONE'; noLoop(); return; } try{ drawStep(); }catch(e){ console.log('ERR step',step,e&&e.stack?e.stack.slice(0,400):e); } step++; }
+function drawStep(){ const only=new URLSearchParams(location.search).get('only'); if(only && !only.split(',').map(Number).includes(step)) return;
+  if(step===0){
+    brush.clip([X(0),Y(0),X(W),Y(600)]);
+    nightHatch("#26347d","cpencil",0.9, 17, -20, 590, 16);
+    brush.noClip();
+  } else if(step===1){
+    brush.clip([X(0),Y(0),X(W),Y(360)]);
+    nightHatch("#1f2a5c","2H",0.75, 31, -30, 330, 30);
+    brush.noClip();
+  } else if(step===2){
+    // 月亮
+    brush.noStroke();
+    brush.fill("#f1d58a", 150); brush.fillTexture(0.35, 0.3);
+    brush.circle(X(MX),Y(MY),MR);
+    // 右边缘那一小片暗面
+    const pts=[];
+    for(let a=-90;a<=90;a+=10){ const r=a*Math.PI/180; pts.push([X(MX+MR*Math.cos(r)),Y(MY+MR*Math.sin(r))]); }
+    for(let a=90;a>=-90;a-=10){ const r=a*Math.PI/180; pts.push([X(MX+MR*0.62*Math.cos(r)),Y(MY+MR*Math.sin(r))]); }
+    brush.noFill();
+    brush.set("cpencil","#26347d",0.55);
+    for(let k=-MR; k<MR; k+=3.2){
+      // 沿天空同一个斜角，只在右侧暗面里走
+      let seg=[];
+      for(let u=-MR*1.5; u<=MR*1.5; u+=1.5){
+        const x=MX+k*0.707+u*0.707, y=MY-k*0.707+u*0.707;
+        const dy=(y-MY)/MR; if(Math.abs(dy)>=1){ if(seg.length>1) break; else continue; }
+        const inCircle=Math.hypot(x-MX,y-MY)<MR-1;
+        const term=MX+MR*0.62*Math.sqrt(1-dy*dy);
+        if(inCircle && x>term) seg.push([x,y]); else if(seg.length>1) break;
+      }
+      if(seg.length>1){ const a=seg[0], b=seg[seg.length-1]; brush.line(X(a[0]),Y(a[1]),X(b[0]),Y(b[1])); }
+    }
+  } else if(step===3){
+    // 山：对岸那道山脊
+    brush.noStroke();
+    brush.fill("#2b3566", 120); brush.fillTexture(0.5, 0.35);
+    brush.polygon([[X(-10),Y(560)],[X(90),Y(520)],[X(210),Y(488)],[X(330),Y(462)],[X(420),Y(476)],[X(560),Y(506)],[X(700),Y(498)],[X(820),Y(528)],[X(910),Y(548)],[X(910),Y(SHORE)],[X(-10),Y(SHORE)]]);
+    brush.noFill();
+    brush.set("charcoal","#1b2038",0.9);
+    brush.spline([[X(-10),Y(560)],[X(90),Y(520)],[X(210),Y(488)],[X(330),Y(462)],[X(420),Y(476)],[X(560),Y(506)],[X(700),Y(498)],[X(820),Y(528)],[X(910),Y(548)]],0.5);
+  } else if(step===4){
+    // 楼
+    brush.noStroke();
+    for(let pass=0;pass<2;pass++) for(const t of towers){
+      brush.fill("#1b2038", t.ifc?150:130); brush.fillTexture(0.45, 0.4);
+      if(t.ifc){
+        brush.polygon([[X(t.x),Y(SHORE)],[X(t.x),Y(t.top+30)],[X(t.x+5),Y(t.top+12)],[X(t.x+13),Y(t.top)],[X(t.x+21),Y(t.top)],[X(t.x+29),Y(t.top+12)],[X(t.x+t.w),Y(t.top+30)],[X(t.x+t.w),Y(SHORE)]]);
+      } else {
+        brush.rect(X(t.x),Y(t.top),t.w,t.h);
+      }
+    }
+    brush.noFill();
+  } else if(step===5){
+    // 窗：暖色碎点
+    for(const t of towers){
+      const n=Math.floor(t.w*t.h/170);
+      for(let i=0;i<n;i++){
+        const wx=t.x+random(4,t.w-4), wy=t.top+random(8,t.h-6);
+        brush.set("2B", random()<0.75?"#f0a95a":"#f6d98e", 1.1);
+        brush.line(X(wx),Y(wy),X(wx+random(3,6)),Y(wy));
+      }
+    }
+    brush.set("charcoal","#1b2038",1.2);
+    brush.spline([[X(-10),Y(SHORE)],[X(300),Y(SHORE+2)],[X(600),Y(SHORE-1)],[X(910),Y(SHORE+1)]],0.4);
+  } else if(step===6){
+    // 水
+    brush.field("seabed");
+    brush.set("2B","#33406f",0.8);
+    for(let y=696;y<1190;y+=random(30,52)){
+      const yy=y+random(-6,6);
+      if(yy>FY-70 && yy<FY+30){
+        brush.clip([X(0),Y(yy-40),X(FX-140),Y(yy+40)]); brush.flowLine(X(20),Y(yy),860,0);
+        brush.clip([X(FX+150),Y(yy-40),X(W),Y(yy+40)]); brush.flowLine(X(20),Y(yy),860,0);
+        brush.noClip();
+      } else brush.flowLine(X(20),Y(yy),860,0);
+    }
+    brush.noField();
+  } else if(step===7){
+    // 倒影：灯往水里拉长
+    const inFerry=(x,y)=> x>FX-140 && x<FX+150 && y>FY-110 && y<FY+30;
+    for(let c=0;c<46;c++){
+      const cx=random(10,W-10);
+      const depth=random(70,250);
+      const col=random()<0.8?"#e8794a":"#f0b060";
+      for(let y=SHORE+10; y<SHORE+depth; y+=random(7,12)){
+        if(random() < (y-SHORE)/depth*0.7) continue;
+        const len=random(5,22)*(1-(y-SHORE)/depth*0.5);
+        const x0=cx+random(-6,6)-len/2;
+        if(inFerry(x0,y)||inFerry(x0+len,y)) continue;
+        brush.set("cpencil", col, 0.7);
+        brush.line(X(x0),Y(y),X(x0+len),Y(y+random(-1.5,1.5)));
+      }
+    }
+    // 月亮的倒影
+    for(let y=SHORE+14; y<SHORE+230; y+=random(8,14)){
+      const len=random(10,34);
+      brush.set("cpencil","#e9cf86",0.7);
+      brush.line(X(MX-len/2+random(-5,5)),Y(y),X(MX+len/2+random(-5,5)),Y(y));
+    }
+  } else if(step===8){
+    // 天星小轮：绿船身，白船楼
+    brush.noStroke();
+    for(let k=0;k<2;k++){
+      brush.fill("#2f6b4f",150); brush.fillTexture(0.4,0.4);
+      brush.polygon([[X(FX-132),Y(FY-24)],[X(FX+142),Y(FY-24)],[X(FX+122),Y(FY+10)],[X(FX-114),Y(FY+10)]]);
+    }
+    brush.noFill();
+    brush.set("rotring","#2f6b4f",0.9);
+    // 船楼只到中间偏前，船头留一截空甲板给她
+    brush.rect(X(FX-104),Y(FY-62),150,38);
+    brush.line(X(FX-116),Y(FY-64),X(FX+58),Y(FY-64));
+    for(let i=0;i<9;i++) brush.rect(X(FX-96+i*16),Y(FY-54),9,12);
+    // 船头栏杆
+    brush.set("pen","#2f6b4f",0.6);
+    brush.line(X(FX+48),Y(FY-40),X(FX+136),Y(FY-40));
+    for(let i=0;i<6;i++) brush.line(X(FX+52+i*16),Y(FY-40),X(FX+52+i*16),Y(FY-24));
+    // 船的倒影
+    brush.set("cpencil","#2f6b4f",0.7);
+    for(let y=FY+18;y<FY+70;y+=random(7,11)){
+      const s=(y-FY)/70;
+      brush.line(X(FX-110+random(-8,8)+s*20),Y(y),X(FX+118+random(-8,8)-s*20),Y(y));
+    }
+  } else if(step===9){
+    // 船上挂了一串南瓜灯
+    const p0=[FX-110,FY-66], p1=[FX-20,FY-104], p2=[FX+128,FY-44];
+    brush.set("pen","#1b2038",0.5);
+    brush.line(X(FX-20),Y(FY-64),X(FX-20),Y(FY-108));
+    brush.spline([[X(p0[0]),Y(p0[1])],[X(FX-66),Y(FY-92)],[X(p1[0]),Y(p1[1])],[X(FX+56),Y(FY-80)],[X(p2[0]),Y(p2[1])]],0.5);
+    brush.noStroke();
+    const lamps=[[FX-92,FY-76],[FX-70,FY-89],[FX-46,FY-99],[FX+6,FY-98],[FX+34,FY-88],[FX+62,FY-76],[FX+90,FY-63],[FX+114,FY-51]];
+    for(const [lx,ly] of lamps){
+      brush.fill("#e8794a",190); brush.fillTexture(0.3,0.3);
+      brush.circle(X(lx),Y(ly+5),4.6);
+    }
+    brush.noFill();
+    // 灯串在水里
+    for(const [lx,ly] of lamps){
+      brush.set("cpencil","#e8794a",0.6);
+      for(let y=FY+22;y<FY+22+random(30,60);y+=random(8,12)) brush.line(X(lx-4),Y(y),X(lx+4),Y(y));
+    }
+  } else if(step===10){
+    // 她：圆耳朵，站在船头，头上两只小角
+    brush.noStroke();
+    for(let k=0;k<2;k++){
+      const j=()=>random(-1,1);
+      brush.fill("#e0673a",125); brush.fillTexture(0.5,0.45);
+      brush.circle(X(DX+j()),Y(DY-R+j()),R);
+      brush.circle(X(DX-R*0.86+j()),Y(DY-R*1.72+j()),R*0.52);
+      brush.circle(X(DX+R*0.86+j()),Y(DY-R*1.72+j()),R*0.52);
+      brush.polygon([[X(DX-R*0.7),Y(DY)],[X(DX+R*0.7),Y(DY)],[X(DX+R*0.52),Y(DY+R*1.55)],[X(DX-R*0.52),Y(DY+R*1.55)]]);
+    }
+    // 脚边一只小螃蟹
+    brush.fill("#e8794a",180); brush.fillTexture(0.3,0.3);
+    brush.noFill();
+    brush.set("2B","#e8794a",1.4);
+    brush.line(X(DX+20),Y(FY-30),X(DX+28),Y(FY-30));
+    brush.line(X(DX+19),Y(FY-28),X(DX+29),Y(FY-28));
+    brush.line(X(DX+21),Y(FY-26),X(DX+27),Y(FY-26));
+    brush.fill("#e8794a",180); brush.fillTexture(0.3,0.3);
+    brush.circle(X(DX+18),Y(FY-33),1.9);
+    brush.circle(X(DX+30),Y(FY-33),1.9);
+    brush.noFill();
+    brush.set("2B","#b8322a",1.2);
+    brush.line(X(DX-5),Y(DY-R*1.9),X(DX-7),Y(DY-R*2.5));
+    brush.line(X(DX+5),Y(DY-R*1.9),X(DX+7),Y(DY-R*2.5));
+    brush.set("rotring","#1b2038",0.6);
+    brush.circle(X(DX-5),Y(DY-R-1),2.4);
+    brush.circle(X(DX+5),Y(DY-R-1),2.4);
+  }
+}
+</script></body></html>

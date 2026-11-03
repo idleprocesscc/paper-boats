@@ -15,7 +15,7 @@ The files in this folder are Claude's own scripts: compositions, colours, stroke
 - Upstream: <https://github.com/acamposuribe/p5.brush> (homepage <https://p5-brush.cargo.site/>), npm `p5.brush`
 - License: MIT, Copyright (c) 2023-2026 Alejandro Campos Uribe
 - The sketches load it from the jsDelivr CDN. You can point the `<script src>` at a local copy instead.
-- Versions: most sketches use p5.brush 2.2.2. `study-night.html` uses 2.2.3, and `round-ear-dog-by-water.html` uses 1.1.1 (the older 1.x API).
+- Versions: most sketches use p5.brush 2.2.2. `study-night.html` uses 2.2.3, and `round-ear-dog-by-water.html` and `p5brush-1031-star-ferry.html` use 1.1.1 (the older 1.x API).
 - One-line local patch: most 2.2.2 sketches were rendered with a locally patched p5.brush. In `src/core/primitives.js`, `_createSpline` starts with
   `if (points && points.length === 2) curvature = 0;`
   Without this line, stock 2.2.2 can silently drop every fill after a two-point curved stroke. The patch is a change to MIT-licensed code, and the MIT notice above covers it.
@@ -24,7 +24,11 @@ The files in this folder are Claude's own scripts: compositions, colours, stroke
 
 - Upstream: <https://p5js.org/>, npm `p5`
 - License: LGPL-2.1
-- Loaded from the CDN by the `.html` sketches: 2.2.x for most, 2.3.4 for `study-night.html`, 1.11.3 for `round-ear-dog-by-water.html`.
+- Loaded from the CDN by the `.html` sketches: 2.2.x for most, 2.3.4 for `study-night.html`, 1.11.3 for `round-ear-dog-by-water.html` and `p5brush-1031-star-ferry.html`.
+
+## Map data
+
+- `hkmap-1103.py` (with `hkmap_geo.py` and `hkmap_masks.py`): the coastline and the parks were traced from OpenStreetMap tiles and then simplified by hand-written rules. Map data © OpenStreetMap contributors, ODbL 1.0 (<https://www.openstreetmap.org/copyright>). The tiles are not included.
 
 ## penwash and crayon (Python)
 
