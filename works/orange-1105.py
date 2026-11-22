@@ -9,7 +9,7 @@
 # 例外：只有戒指是硬边的金属亮。
 import os, sys, numpy as np
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-KB = '~/.claude/workspace/painting-method/kbrush-cloud'
+KB = os.environ.get('KBRUSH_ENGINE_DIR', './kbrush-cloud')  # set to where the kbrush engine lives (not included)
 sys.path[:0] = [KB, KB + '/paint']
 import kbrush as K
 K.set_seed(11)
